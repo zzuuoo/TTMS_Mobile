@@ -17,6 +17,11 @@ public class Play implements Serializable
     private double play_ticket_price;
     private int play_status;
 
+    public String toString()
+    {
+        return play_name;
+    }
+
     public int getPlay_id() {
         return play_id;
     }

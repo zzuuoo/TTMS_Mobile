@@ -13,13 +13,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.miaojie.ptest.Adapter.VPadapter;
-import com.example.miaojie.ptest.Fragment.BBSFragment;
 import com.example.miaojie.ptest.Fragment.ManageFragment;
 import com.example.miaojie.ptest.Fragment.MoiveListFragment;
 import com.example.miaojie.ptest.Fragment.PersonalFragment;
 import com.example.miaojie.ptest.R;
 import com.example.miaojie.ptest.Utils.SeatTable;
+import com.example.miaojie.ptest.pojo.Employee;
 import com.example.miaojie.ptest.pojo.OrderInfo;
+import com.example.miaojie.ptest.pojo.User;
 import com.example.miaojie.ptest.pojo.UserInfo;
 
 import java.util.ArrayList;
@@ -27,7 +28,9 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
     public static OrderInfo orderInfo=new OrderInfo();
     public static UserInfo userInfo;
+    public static Employee employee=null;
     public static boolean isLogin=false;
+    public static User user=null;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private RecyclerView recyclerView;
@@ -35,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Fragment>fragmentArrayList;
     private ArrayList<Integer>piclist;
     private ArrayList<String> title;
-    private BBSFragment fragment;
+//    private BBSFragment fragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,18 +73,24 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        userInfo= (UserInfo) getIntent().getSerializableExtra("userInfo");
-        BBSFragment fragment=new BBSFragment();
-        fragment.name="";
-        if(userInfo!=null) {
-            fragment.name = userInfo.getUserNickName();
-            Log.e("NickName",userInfo.getUserNickName());
-        }
+        user= (User) getIntent().getSerializableExtra("user");
+//        MyDatabaseHelper myDatabaseHelper = MyDatabaseHelper.getInstance();
+//        SQLiteDatabase sqLiteDatabase = myDatabaseHelper.getReadableDatabase();
+//        Cursor cursor  = sqLiteDatabase.query("employee",null,"emp_no = ?",new String[]{user.getEmp_no()},null,null,null,null);
+//        if(cursor.moveToFirst())
+//        {
+//            employee = new Employee();
+//            employee.setEmp_id(cursor.getInt(cursor.getColumnIndex("emp_id")));
+//            employee.setEmp_no(cursor.getString(cursor.getColumnIndex("emp_no")));
+//            employee.setEmp_addr(cursor.getString(cursor.getColumnIndex("emp_addr")));
+//            employee.setEmp_tel_num(cursor.getString(cursor.getColumnIndex("emp_tel_numm")));
+//            employee.setEmp_email(cursor.getString(cursor.getColumnIndex("emp_email")));
+//            employee.setEmp_name(cursor.getString(cursor.getColumnIndex("emp_name")));
+//        }
         if(fragmentArrayList.size()<3)
         {
             fragmentArrayList.add(new ManageFragment());
             fragmentArrayList.add(new MoiveListFragment());
-//            fragmentArrayList.add(new BBSFragment());
             fragmentArrayList.add(new PersonalFragment());
         }
 

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Activity.AddPlayActivity">
+    tools:context=".Activity.EditStudioActivity">
     <LinearLayout
         android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
@@ -15,15 +16,15 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="名字："
+            android:text="厅名："
             android:textSize="24dp"/>
         <EditText
             android:layout_width="240dp"
             android:layout_height="40dp"
-            android:hint="请输入影片名字"
+            android:hint="请输入演出厅名字"
             android:gravity="center"
             android:background="@drawable/shape_button"
-            android:id="@+id/play_name_add"/>
+            android:id="@+id/studio_name_edit"/>
     </LinearLayout>
     <LinearLayout
         android:layout_marginTop="15dp"
@@ -36,96 +37,62 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="时长："
+            android:text="行："
             android:textSize="24dp"/>
         <EditText
-            android:layout_width="240dp"
-            android:layout_height="40dp"
-            android:hint="请输入影片时长，单位为分钟"
+            android:layout_width="90dp"
+            android:hint="行"
+            android:gravity="center"
             android:inputType="number"
-            android:gravity="center"
-            android:background="@drawable/shape_button"
-            android:id="@+id/play_time_add"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        >
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="类型："
-            android:textSize="24dp"/>
-        <EditText
-            android:layout_width="90dp"
-            android:hint="影片类型"
-            android:gravity="center"
             android:layout_height="40dp"
             android:background="@drawable/shape_button"
-            android:id="@+id/play_type_add"/>
+            android:id="@+id/studio_row_edit"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="语言："
+            android:inputType="number"
+            android:text="列："
             android:textSize="24dp"/>
         <EditText
             android:layout_width="90dp"
-            android:hint="影片语言"
+            android:hint="列"
             android:gravity="center"
             android:layout_height="40dp"
             android:background="@drawable/shape_button"
-            android:id="@+id/play_lang_add"/>
+            android:id="@+id/studio_col_edit"/>
     </LinearLayout>
-
     <LinearLayout
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center_vertical"
+        android:layout_gravity="center"
         >
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="价格："
+            android:text="状态："
             android:textSize="24dp"/>
-        <EditText
-            android:layout_width="130dp"
-            android:hint="请输入影片价格"
-            android:gravity="center"
-            android:inputType="numberDecimal"
-            android:layout_height="40dp"
-            android:background="@drawable/shape_button"
-            android:id="@+id/play_add_ticket"/>
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:id="@+id/add_radiogroup">
+            android:id="@+id/edit_radiogroup_studio">
             <RadioButton
                 android:layout_width="wrap_content"
-                android:id="@+id/add_status_1"
-                android:textColor="@color/green"
-                android:text="在售"
+                android:id="@+id/edit_status_studio_1"
+                android:text="待用"
+                android:checked="true"
                 android:layout_height="wrap_content" />
             <RadioButton
-                android:text="待售"
-                android:checked="true"
-                android:textColor="@color/red"
-                android:id="@+id/add_status_0"
+                android:text="在用"
+                android:id="@+id/edit_status_studio_0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </RadioGroup>
-
     </LinearLayout>
     <LinearLayout
-        android:layout_marginTop="15dp"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -139,35 +106,13 @@
             android:textSize="24dp"/>
         <EditText
             android:layout_width="240dp"
-            android:layout_height="50dp"
+            android:layout_height="150dp"
             android:textSize="20dp"
-            android:gravity="center"
-            android:hint="请输入影片简介"
             android:inputType="textMultiLine"
-            android:background="@drawable/shape_button"
-            android:id="@+id/play_introduction_add"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        >
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="海报："
-            android:textSize="24dp"/>
-        <TextView
-            android:layout_width="240dp"
-            android:layout_height="40dp"
-            android:textSize="20dp"
-            android:text="+"
             android:gravity="center"
+            android:hint="请输入影厅简介"
             android:background="@drawable/shape_button"
-            android:id="@+id/play_image_add"/>
+            android:id="@+id/studio_introduction_edit"/>
     </LinearLayout>
     <LinearLayout
         android:layout_marginTop="50dp"
@@ -183,18 +128,17 @@
             android:text="确定"
             android:textColor="@color/green"
             android:textSize="24dp"
-            android:id="@+id/sure_addplay"
+            android:id="@+id/sure_editstudio"
             android:background="@drawable/button_selector"
             android:layout_marginRight="10dp"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:text="取消"
-            android:id="@+id/cancel_addplay"
+            android:id="@+id/cancel_editstudio"
             android:layout_marginLeft="10dp"
             android:textColor="@color/red"
             android:textSize="24dp"
             android:background="@drawable/button_selector"/>
     </LinearLayout>
-
 </LinearLayout>

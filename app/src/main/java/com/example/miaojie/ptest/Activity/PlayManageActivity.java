@@ -123,8 +123,6 @@ public class PlayManageActivity extends AppCompatActivity {
         play_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Toast.makeText(getApplicationContext(),"添加",Toast.LENGTH_SHORT).show();
-//                insertDataIntoSqlite();
                 Intent intent = new Intent(PlayManageActivity.this, AddPlayActivity.class);
                 startActivityForResult(intent,1);//到时候重写那个返回调用函数
             }
@@ -140,7 +138,7 @@ public class PlayManageActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Toast.makeText(getApplicationContext(),newText, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(),newText, Toast.LENGTH_SHORT).show();
                 searchlist = new ArrayList<Play>();
                 for(int i=0;i<list.size();i++){
                     if(list.get(i).getPlay_name().contains(newText)){
@@ -182,13 +180,10 @@ public class PlayManageActivity extends AppCompatActivity {
                 p.setPlay_image(cursor.getString(cursor.getColumnIndex("play_image")));
                 p.setPlay_length(cursor.getInt(cursor.getColumnIndex("play_length")));
                 p.setPlay_introdution(cursor.getString(cursor.getColumnIndex("play_introduction")));
-//                p.setPlay_introdution("有问题");
                 p.setPlay_id(cursor.getInt(cursor.getColumnIndex("play_id")));
                 Log.e("play_id",cursor.getInt(cursor.getColumnIndex("play_id"))+"");
                 p.setPlay_lang(cursor.getString(cursor.getColumnIndex("play_lang")));
                 p.setPlay_type(cursor.getString(cursor.getColumnIndex("play_type")));
-//                p.setPlay_lang("English");
-//                p.setPlay_type("恐怖");
                 list.add(p);
             }while (cursor.moveToNext());
         }

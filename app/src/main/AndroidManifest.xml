@@ -71,10 +71,32 @@
             android:name=".Activity.SeatManageActivity"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activity.AddPlayActivity"
-            android:launchMode="singleTask"/>
-        <activity android:name=".Activity.PlayEditActivity"
-            android:launchMode="singleTask"></activity>
+        <activity
+            android:name=".Activity.AddPlayActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".Activity.PlayEditActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".Activity.AddStudioActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".Activity.EditStudioActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".Activity.AddScheduleActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".Activity.EditScheduleActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".Activity.StudioSeatManageActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Activity.AddUserActivity"
+            android:launchMode="singleTask" />
+        <activity android:name=".Activity.EditUserActivity"
+            android:launchMode="singleTask" ></activity>
     </application>
 
 </manifest>

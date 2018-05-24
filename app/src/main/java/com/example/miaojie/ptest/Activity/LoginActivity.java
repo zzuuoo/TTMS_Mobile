@@ -1,7 +1,11 @@
 package com.example.miaojie.ptest.Activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -9,14 +13,13 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.BBS;
 import com.example.miaojie.ptest.R;
-import com.example.miaojie.ptest.pojo.UserInfo;
-
-import java.util.ArrayList;
+import com.example.miaojie.ptest.Utils.MyDatabaseHelper;
+import com.example.miaojie.ptest.pojo.User;
 
 /**
  * Created by miaojie on 2017/5/22.
@@ -27,7 +30,8 @@ public class LoginActivity extends Activity {
     private EditText passWord;
     private Button loginButton;
     private Button registerButton;
-    private ArrayList<UserInfo>userInfos;
+    private CheckBox remeber;
+//    private ArrayList<UserInfo>userInfos;
     private Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +41,8 @@ public class LoginActivity extends Activity {
         passWord= (EditText) findViewById(R.id.login_passWord);
         loginButton= (Button) findViewById(R.id.login_login);
         registerButton= (Button) findViewById(R.id.login_register);
+        remeber = (CheckBox)findViewById(R.id.remeber_password);
+        readAccount();
 
         handler=new Handler(){
             @Override
@@ -48,15 +54,24 @@ public class LoginActivity extends Activity {
                         passWord.setText("");
                         break;
                     case 2:
+                        if(remeber.isChecked()){
+                            //创建sharedPreference对象，info表示文件名，MODE_PRIVATE表示访问权限为私有的
+                            SharedPreferences sp = getSharedPreferences("user", MODE_PRIVATE);
+                            //获得sp的编辑器
+                            SharedPreferences.Editor ed = sp.edit();
+                            //以键值对的显示将用户名和密码保存到sp中
+                            ed.putString("account", userName.getText().toString());
+                            ed.putString("password", passWord.getText().toString());
+                            //提交用户名和密码
+                            ed.commit();
+                        }else{
+                            SharedPreferences sp = getSharedPreferences(userName.getText().toString(), Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sp.edit(); editor.clear(); editor.commit();
+                        }
                         MainActivity.isLogin=true;
                         Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-                        intent.putExtra("userInfo",(UserInfo)msg.obj);
-                        Log.e("登录",(((UserInfo) msg.obj).getUserNickName()));
-//                        UserInfo userInfo=(UserInfo)msg.obj;
-//
-//                        MainActivity.userInfo.setUserName(userInfo.getUserName());
-//                        MainActivity.userInfo.setUserNickName(userInfo.getUserNickName());
-//                        MainActivity.userInfo.setUserPassWord(userInfo.getUserPassWord());
+                        intent.putExtra("user",(User)msg.obj);
+                        Log.e("登录",(((User) msg.obj).getEmp_no()));
                         Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
                         startActivity(intent);
                         LoginActivity.this.finish();
@@ -74,26 +89,26 @@ public class LoginActivity extends Activity {
                     public void run() {
                         super.run();
                         Message message=new Message();
-                        String name=null;
-
-                            name=  BBS.login(userName.getText().toString(),passWord.getText().toString())+"";
-
-//                if(userName.getText().toString().equals(userInfos.get(i).getUserName())&&
-//                            passWord.getText().toString().equals(userInfos.get(i).getUserPassWord()))
-                        if(name==null||name.equals("")||name.equals("null"))
+                        User user = null;
+                        MyDatabaseHelper myDatabaseHelper = MyDatabaseHelper.getInstance();
+                        SQLiteDatabase sqLiteDatabase = myDatabaseHelper.getReadableDatabase();
+                        Cursor cursor = sqLiteDatabase.query("user",null," emp_no = ?",new String[]{userName.getText().toString()},null,null,null);
+                        if(cursor.moveToFirst()){
+                            user = new User();
+                            user.setEmp_no(cursor.getString(cursor.getColumnIndex("emp_no")));
+                            user.setEmp_pass(cursor.getString(cursor.getColumnIndex("emp_pass")));
+                            user.setType(cursor.getInt(cursor.getColumnIndex("type")));
+                            user.setHead_path(cursor.getString(cursor.getColumnIndex("head_path")));
+                        }
+                        if(user==null)
                         {
-                            Log.e("名字为空","asd");
                             message.what=1;
                             handler.sendMessage(message);
                             return;
                         }
-                        UserInfo currentUserInfo=new UserInfo();
-                        currentUserInfo.setUserName(userName.getText().toString());
-                        currentUserInfo.setUserNickName(name);
-                        currentUserInfo.setUserPassWord(passWord.getText().toString());
-                        message.what=2;
-                        message.obj=currentUserInfo;
 
+                        message.what=2;
+                        message.obj=user;
                         handler.sendMessage(message);
                     }
                 }.start();
@@ -103,10 +118,27 @@ public class LoginActivity extends Activity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(LoginActivity.this,RegisterActivity.class);
-                startActivity(intent);
+//                Intent intent=new Intent(LoginActivity.this,RegisterActivity.class);
+//                startActivity(intent);
+                Toast.makeText(getApplicationContext(),"待完成",Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    //读取保存在本地的用户名和密码
+    public void readAccount() {
+
+        //创建SharedPreferences对象
+        SharedPreferences sp = getSharedPreferences("user", MODE_PRIVATE);
+        //获得保存在SharedPredPreferences中的用户名和密码
+        String account = sp.getString("account", "");
+        String password = sp.getString("password", "");
+        //在用户名和密码的输入框中显示用户名和密码
+        userName.setText(account);
+        passWord.setText(password);
+        if(account!=null&&!account.equals("")){
+            remeber.setChecked(true);
+        }
     }
 
     @Override

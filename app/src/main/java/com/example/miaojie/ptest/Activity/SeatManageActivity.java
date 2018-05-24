@@ -1,16 +1,19 @@
 package com.example.miaojie.ptest.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.example.miaojie.ptest.R;
 import com.example.miaojie.ptest.Utils.SeatTableManage;
 import com.example.miaojie.ptest.pojo.OrderInfo;
 import com.example.miaojie.ptest.pojo.Seat;
+import com.example.miaojie.ptest.pojo.Studio;
 
 import java.util.ArrayList;
 
@@ -21,13 +24,31 @@ public class SeatManageActivity extends AppCompatActivity {
     ArrayList<Seat> chooseSeats = null;
     private Handler handler;
     private Toolbar toolbar;
+    private Button update;
+    private Studio studio = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seat_manage);
+        init();
+
+    }
+    public void init()
+    {
+        Intent intent = this.getIntent();
+        studio = (Studio) intent.getSerializableExtra("studio");
+        update = (Button)findViewById(R.id.update_seat);
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SeatManageActivity.this.setResult(0);
+                finish();
+            }
+        });
+
         seatTable = (SeatTableManage) findViewById(R.id.seatmanagetableView);
-        seatTable.setScreenName("我是测试厅");//设置屏幕名称
+        seatTable.setScreenName(studio.getStudio_name());//设置屏幕名称
         seatTable.setMaxSelected(1000);//设置最多选中
         seats=new ArrayList<>();
 
@@ -95,7 +116,7 @@ public class SeatManageActivity extends AppCompatActivity {
             }
 
         });
-        seatTable.setData(10,15);
+        seatTable.setData(studio.getStudio_row_count(),studio.getStudio_col_count());
         //toolbar.setTitle(getIntent().getStringExtra("MovieName"));
 
         toolbar= (Toolbar) findViewById(R.id.mansge_seat_toolbar);
@@ -105,6 +126,7 @@ public class SeatManageActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SeatManageActivity.this.setResult(-1);
                 finish();
             }
         });
@@ -168,8 +190,7 @@ public class SeatManageActivity extends AppCompatActivity {
 
             }
         });
-
-//        toolbar.setNavigationOnClickListener();
+        //        toolbar.setNavigationOnClickListener();
     }
 
     private boolean isThisSession(OrderInfo orderInfo)

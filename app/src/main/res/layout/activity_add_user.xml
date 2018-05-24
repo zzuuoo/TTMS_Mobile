@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Activity.AddPlayActivity">
+    tools:context=".Activity.AddUserActivity">
     <LinearLayout
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -15,18 +16,18 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="名字："
+            android:text="昵称："
             android:textSize="24dp"/>
         <EditText
             android:layout_width="240dp"
             android:layout_height="40dp"
-            android:hint="请输入影片名字"
+            android:hint="请输入您的昵称"
             android:gravity="center"
             android:background="@drawable/shape_button"
-            android:id="@+id/play_name_add"/>
+            android:id="@+id/add_emp_name"/>
     </LinearLayout>
     <LinearLayout
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,141 +37,157 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="时长："
+            android:text="账号："
             android:textSize="24dp"/>
         <EditText
             android:layout_width="240dp"
             android:layout_height="40dp"
-            android:hint="请输入影片时长，单位为分钟"
-            android:inputType="number"
+            android:hint="请输入您的账号"
             android:gravity="center"
             android:background="@drawable/shape_button"
-            android:id="@+id/play_time_add"/>
+            android:id="@+id/add_emp_no"/>
     </LinearLayout>
     <LinearLayout
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="密码："
+            android:textSize="24dp"/>
+        <EditText
+            android:layout_width="240dp"
+            android:layout_height="40dp"
+            android:hint="请输入您的密码"
+            android:gravity="center"
+            android:background="@drawable/shape_button"
+            android:id="@+id/add_emp_pass"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="手机："
+            android:textSize="24dp"/>
+        <EditText
+            android:layout_width="240dp"
+            android:layout_height="40dp"
+            android:hint="请输入您的手机"
+            android:gravity="center"
+            android:background="@drawable/shape_button"
+            android:id="@+id/add_emp_tel"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="邮箱："
+            android:textSize="24dp"/>
+        <EditText
+            android:layout_width="240dp"
+            android:layout_height="40dp"
+            android:hint="请输入您的邮箱"
+            android:gravity="center"
+            android:background="@drawable/shape_button"
+            android:id="@+id/add_emp_email"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="地址："
+            android:textSize="24dp"/>
+        <EditText
+            android:layout_width="240dp"
+            android:layout_height="40dp"
+            android:hint="请输入您的地址"
+            android:gravity="center"
+            android:background="@drawable/shape_button"
+            android:id="@+id/add_emp_addr"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="15dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="头像："
+            android:layout_marginRight="60dp"
+            android:gravity="center"
+            android:textSize="24dp" />
+
+        <ImageView
+            android:id="@+id/add_head_path"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/eye_can_see"
+            android:gravity="center" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
         >
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="类型："
             android:textSize="24dp"/>
-        <EditText
-            android:layout_width="90dp"
-            android:hint="影片类型"
-            android:gravity="center"
-            android:layout_height="40dp"
-            android:background="@drawable/shape_button"
-            android:id="@+id/play_type_add"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="语言："
-            android:textSize="24dp"/>
-        <EditText
-            android:layout_width="90dp"
-            android:hint="影片语言"
-            android:gravity="center"
-            android:layout_height="40dp"
-            android:background="@drawable/shape_button"
-            android:id="@+id/play_lang_add"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        >
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="价格："
-            android:textSize="24dp"/>
-        <EditText
-            android:layout_width="130dp"
-            android:hint="请输入影片价格"
-            android:gravity="center"
-            android:inputType="numberDecimal"
-            android:layout_height="40dp"
-            android:background="@drawable/shape_button"
-            android:id="@+id/play_add_ticket"/>
         <RadioGroup
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:id="@+id/add_radiogroup">
+            android:id="@+id/add_radiogroup_user">
             <RadioButton
                 android:layout_width="wrap_content"
-                android:id="@+id/add_status_1"
-                android:textColor="@color/green"
-                android:text="在售"
+                android:id="@+id/add_userTypeManager"
+                android:text="管理员"
+                android:checked="true"
                 android:layout_height="wrap_content" />
             <RadioButton
-                android:text="待售"
-                android:checked="true"
-                android:textColor="@color/red"
-                android:id="@+id/add_status_0"
+                android:text="售票员"
+                android:id="@+id/add_userTypeSaler"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </RadioGroup>
+    </LinearLayout>
 
-    </LinearLayout>
     <LinearLayout
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        >
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="简介："
-            android:textSize="24dp"/>
-        <EditText
-            android:layout_width="240dp"
-            android:layout_height="50dp"
-            android:textSize="20dp"
-            android:gravity="center"
-            android:hint="请输入影片简介"
-            android:inputType="textMultiLine"
-            android:background="@drawable/shape_button"
-            android:id="@+id/play_introduction_add"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_marginTop="15dp"
-        android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical"
-        >
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="海报："
-            android:textSize="24dp"/>
-        <TextView
-            android:layout_width="240dp"
-            android:layout_height="40dp"
-            android:textSize="20dp"
-            android:text="+"
-            android:gravity="center"
-            android:background="@drawable/shape_button"
-            android:id="@+id/play_image_add"/>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -183,18 +200,17 @@
             android:text="确定"
             android:textColor="@color/green"
             android:textSize="24dp"
-            android:id="@+id/sure_addplay"
+            android:id="@+id/sure_addUser"
             android:background="@drawable/button_selector"
             android:layout_marginRight="10dp"/>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:text="取消"
-            android:id="@+id/cancel_addplay"
+            android:id="@+id/cancel_addUser"
             android:layout_marginLeft="10dp"
             android:textColor="@color/red"
             android:textSize="24dp"
             android:background="@drawable/button_selector"/>
     </LinearLayout>
-
 </LinearLayout>

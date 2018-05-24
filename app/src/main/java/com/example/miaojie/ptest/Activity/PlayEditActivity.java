@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.example.miaojie.ptest.R;
@@ -22,7 +24,9 @@ public class PlayEditActivity extends AppCompatActivity implements View.OnClickL
     private EditText play_lang;
     private EditText play_introduction;
     private EditText play_ticket;
-    private EditText play_status;
+    private RadioGroup radioGroup;
+    private RadioButton radioButton1;
+    private RadioButton radioButton0;
     private TextView play_image;
     private Button sure_editplay;
     private Button cancel_editplay;
@@ -45,11 +49,20 @@ public class PlayEditActivity extends AppCompatActivity implements View.OnClickL
         play_time = (EditText)findViewById(R.id.play_time);
         play_introduction = (EditText)findViewById(R.id.play_introduction);
         play_image = (TextView) findViewById(R.id.play_image);
-        play_status=(EditText) findViewById(R.id.play_edit_status);
+        radioButton0 = (RadioButton)findViewById(R.id.status_0);
+        radioButton1 = (RadioButton)findViewById(R.id.status_1);
+        radioGroup = (RadioGroup)findViewById(R.id.radiogroup);
+//        play_status=(EditText) findViewById(R.id.play_edit_status);
         sure_editplay = (Button) findViewById(R.id.sure_editplay);
         sure_editplay.setOnClickListener(this);
         cancel_editplay = (Button)findViewById(R.id.cancel_editplay);
         cancel_editplay.setOnClickListener(this);
+
+        if (play.getPlay_status()==0){
+            radioButton0.setChecked(true);
+        }else{
+            radioButton1.setChecked(true);
+        }
 
         play_name.setText(play.getPlay_name());
         play_lang.setText(String.valueOf(play.getPlay_lang()));
@@ -58,7 +71,6 @@ public class PlayEditActivity extends AppCompatActivity implements View.OnClickL
         play_type.setText(String.valueOf(play.getPlay_type()));
         play_time.setText(String.valueOf(play.getPlay_length()));
         play_ticket.setText(String.valueOf(play.getPlay_ticket_price()));
-        play_status.setText(String.valueOf(play.getPlay_status()));
     }
 
 
@@ -78,7 +90,11 @@ public class PlayEditActivity extends AppCompatActivity implements View.OnClickL
                     contentValues.put("play_lang",play_lang.getText().toString());
                     contentValues.put("play_length",play_time.getText().toString());
                     contentValues.put("play_ticket_price",play_ticket.getText().toString());
-                    contentValues.put("play_status",play_status.getText().toString());
+                    if(radioButton1.isChecked()){
+                        contentValues.put("play_status",String.valueOf(1));
+                    }else {
+                        contentValues.put("play_status",String.valueOf(0));
+                    };
                     db.update("play",contentValues,"play_id = ?",
                             new String[]{String.valueOf(play.getPlay_id())});
                     this.setResult(1);

@@ -1,5 +1,6 @@
 package com.example.miaojie.ptest.Utils;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -106,14 +107,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
             "  CONSTRAINT `FK_employee_sale` FOREIGN KEY (`emp_id`) REFERENCES `employee` (`emp_id`)\n" +
             ")";
 
-//    public static final String CREATE_DATA_DICT = "CREATE TABLE `data_dict` (\n" +
-//            "  `dict_id` int(11) NOT NULL primary key autoincrement,\n" +
-//            "  `dict_parent_id` int(11) DEFAULT NULL,\n" +
-//            "  `dict_index` int(11) DEFAULT NULL,\n" +
-//            "  `dict_name` varchar(200) DEFAULT NULL,\n" +
-//            "  `dict_value` varchar(100) NOT NULL,\n" +
-//            "  CONSTRAINT `FK_super_child_dict` FOREIGN KEY (`dict_parent_id`) REFERENCES `data_dict` (`dict_id`)\n" +
-//            ") ";
 
     private Context context;
 
@@ -133,7 +126,16 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(CREATE_TICKET);
         sqLiteDatabase.execSQL(CREATE_SALE);
         sqLiteDatabase.execSQL(CREATE_SALE_ITEM);
-//        sqLiteDatabase.execSQL(CREATE_DATA_DICT);
+        ContentValues contentValues = new ContentValues();
+        ContentValues contentValues1 = new ContentValues();
+        contentValues.put("emp_no","admin");
+        contentValues.put("emp_name","root");
+        contentValues1.put("emp_no","admin");
+        contentValues1.put("emp_pass","admin");
+        contentValues1.put("type",1);
+        contentValues1.put("head_path","我是头像路径");
+        sqLiteDatabase.insert("employee",null,contentValues);
+        sqLiteDatabase.insert("user",null,contentValues1);
         Toast.makeText(context,"创建数据库成功",Toast.LENGTH_SHORT).show();
 
     }

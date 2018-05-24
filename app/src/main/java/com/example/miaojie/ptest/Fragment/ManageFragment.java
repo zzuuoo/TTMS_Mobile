@@ -12,12 +12,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.miaojie.ptest.Activity.MainActivity;
 import com.example.miaojie.ptest.Activity.PlayManageActivity;
 import com.example.miaojie.ptest.Activity.ScheduleManageActivity;
-import com.example.miaojie.ptest.Activity.SeatManageActivity;
 import com.example.miaojie.ptest.Activity.StudioManageActivity;
+import com.example.miaojie.ptest.Activity.StudioSeatManageActivity;
 import com.example.miaojie.ptest.Activity.UserManageActivity;
 import com.example.miaojie.ptest.R;
+import com.example.miaojie.ptest.Utils.MyApplication;
 
 public class ManageFragment extends Fragment implements View.OnClickListener{
 
@@ -43,30 +45,36 @@ public class ManageFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View view) {
         Intent intent;
-        switch (view.getId()){
-            case R.id.button_play:
-                intent = new Intent(getActivity(), PlayManageActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.button_schedule:
-                intent = new Intent(getActivity(), ScheduleManageActivity.class);
-                startActivity(intent);
-                 break;
-            case R.id.button_seat:
-                intent = new Intent(getActivity(), SeatManageActivity.class);
-                startActivity(intent);
-                 break;
-            case R.id.button_studio:
-                intent = new Intent(getActivity(), StudioManageActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.button_user:
-                intent = new Intent(getActivity(), UserManageActivity.class);
-                startActivityForResult(intent,1);
-                break;
-            default:
+        if(MainActivity.user!=null&&MainActivity.user.getType()==1)
+        {
+            switch (view.getId()){
+                case R.id.button_play:
+                    intent = new Intent(getActivity(), PlayManageActivity.class);
+                    startActivity(intent);
                     break;
+                case R.id.button_schedule:
+                    intent = new Intent(getActivity(), ScheduleManageActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.button_seat:
+                    intent = new Intent(getActivity(), StudioSeatManageActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.button_studio:
+                    intent = new Intent(getActivity(), StudioManageActivity.class);
+                    startActivity(intent);
+                    break;
+                case R.id.button_user:
+                    intent = new Intent(getActivity(), UserManageActivity.class);
+                    startActivityForResult(intent,1);
+                    break;
+                default:
+                    break;
+            }
+        }else{
+            Toast.makeText(MyApplication.getContext(),"你没有权限",Toast.LENGTH_SHORT).show();
         }
+
 
 
     }

@@ -1,6 +1,8 @@
 package com.example.miaojie.ptest.pojo;
 
-public class Studio {
+import java.io.Serializable;
+
+public class Studio implements Serializable{
     private int studio_id;
     private String studio_name;
     private int studio_row_count;
@@ -8,6 +10,10 @@ public class Studio {
     private String studio_introduction;
     private int studio_flag;
 
+    public String toString()
+    {
+        return studio_name;
+    }
     public int getStudio_id() {
         return studio_id;
     }

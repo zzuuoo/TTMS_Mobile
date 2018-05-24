@@ -1,8 +1,9 @@
 package com.example.miaojie.ptest.pojo;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Schedule {
+public class Schedule implements Serializable{
     private int sched_id;
     private int studio_id;
     private int play_id;

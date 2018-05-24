@@ -1,6 +1,8 @@
 package com.example.miaojie.ptest.pojo;
 
-public class Employee {
+import java.io.Serializable;
+
+public class Employee implements Serializable{
     private int emp_id;
     private String emp_no;
     private String emp_name;
