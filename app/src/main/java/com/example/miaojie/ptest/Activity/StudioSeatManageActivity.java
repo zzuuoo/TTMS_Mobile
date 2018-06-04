@@ -117,6 +117,7 @@ public class StudioSeatManageActivity extends AppCompatActivity {
             } while (cursor.moveToNext());
 
         }
+        cursor.close();
     }
 
     @Override

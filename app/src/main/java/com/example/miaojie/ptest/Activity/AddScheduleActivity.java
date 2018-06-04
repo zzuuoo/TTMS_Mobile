@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.miaojie.ptest.R;
+import com.example.miaojie.ptest.Utils.LoadingDialog;
 import com.example.miaojie.ptest.Utils.MyDatabaseHelper;
 import com.example.miaojie.ptest.pojo.Play;
 import com.example.miaojie.ptest.pojo.Studio;
@@ -40,6 +43,9 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
     private EditText sched_date;
     private EditText sched_time;
 
+    LoadingDialog dialog;
+    private Handler handler;
+
 
 
     @Override
@@ -47,12 +53,26 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_schedule);
         init();
+        handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what)
+                {
+                    case 1:
+                        dialog.close();
+                        Toast.makeText(AddScheduleActivity.this,"生成票成功",Toast.LENGTH_SHORT).show();
+                        finish();
+                        break;
+                }
+            }
+        };
     }
     public void init()
     {
         MyDatabaseHelper myDatabaseHelper = MyDatabaseHelper.getInstance();
         SQLiteDatabase sqLiteDatabase = myDatabaseHelper.getReadableDatabase();
         Cursor cursor = sqLiteDatabase.query("play",null,null,null,null,null,null);
+        dialog = new LoadingDialog(AddScheduleActivity.this,"生成票中...");
         if(cursor.moveToFirst())
         {
 
@@ -87,6 +107,7 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
             } while (cursor.moveToNext());
 
         }
+        cursor.close();
         sure = (Button)findViewById(R.id.sure_addschedule);
         cancle=(Button)findViewById(R.id.cancel_addschedule);
         spinnerPlay = (Spinner)findViewById(R.id.add_play_spinner);
@@ -151,6 +172,11 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
+                    if (date.getTime()<new Date().getTime())
+                    {
+                        Toast.makeText(getApplication(),"时间不合法",Toast.LENGTH_SHORT).show();
+                        break;
+                    }
                     String sd1 = format1.format(date);
 //                    Toast.makeText(getApplication(),sd+"---"+sd1,Toast.LENGTH_SHORT).show();
                     MyDatabaseHelper myDatabaseHelper = MyDatabaseHelper.getInstance();
@@ -161,19 +187,59 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
                     contentValues.put("sched_ticket_price",ticket_price.getText().toString());
                     contentValues.put("sched_time",sd1);
 
-                    try {
-                        sqLiteDatabase.insert("schedule",null,contentValues);
-//                        contentValues.clear();
-//                        contentValues.put("studio_flag",0);
-//                        sqLiteDatabase.update("studio",contentValues,"studio_id = ?",
-//                                new String[]{String.valueOf(s.getStudio_id())});
-                    }catch (Exception e)
+                     long in=   sqLiteDatabase.insert("schedule",null,contentValues);
+
+                     if(in==-1)
                     {
                         this.setResult(0);
-                        finish();
+                    }else{
+                         sqLiteDatabase.execSQL("update play set play_status = play_status+1 " +
+                                 " where play_id = " +p.getPlay_id());
+                        this.setResult(1);
                     }
-                    this.setResult(1);
-                    finish();
+                    Cursor cursor = sqLiteDatabase.rawQuery("select last_insert_rowid() from schedule",null);
+                    int schedule_id =0;
+                    if(cursor.moveToFirst()){
+                        schedule_id=cursor.getInt(0);
+                    }
+                    cursor.close();
+                    int finalSchedule_id = schedule_id;
+                    dialog.show();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            MyDatabaseHelper myDatabaseHelper = MyDatabaseHelper.getInstance();
+                            SQLiteDatabase sqLiteDatabase = myDatabaseHelper.getWritableDatabase();
+
+                            ContentValues contentValues = new ContentValues();
+
+
+                            Cursor cursor = sqLiteDatabase.query("seat",null,"studio_id = ?",new String[]{String.valueOf(s.getStudio_id())},null,null,null);
+                            if(cursor.moveToFirst())
+                            {
+
+                                do{
+
+                                    if(cursor.getInt(cursor.getColumnIndex("seat_status"))==1)
+                                    {
+                                        contentValues.clear();
+                                        contentValues.put("seat_id", cursor.getInt(cursor.getColumnIndex("seat_id")));
+                                        contentValues.put("sched_id", finalSchedule_id);
+                                        contentValues.put("ticket_price",ticket_price.getText().toString());
+                                        contentValues.put("ticket_status",0);
+                                        sqLiteDatabase.insert("ticket",null,contentValues);
+                                    }
+
+                                }while (cursor.moveToNext());
+                            }
+                            cursor.close();
+                            Message message = new Message();
+                            message.what = 1;
+                            handler.sendMessage(message);
+                        }
+                    }).start();
+//                    finish();
                 }
                 break;
         }

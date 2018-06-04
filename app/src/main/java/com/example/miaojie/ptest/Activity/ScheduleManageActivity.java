@@ -97,6 +97,9 @@ public class ScheduleManageActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         SQLiteDatabase sqLiteDatabase = MyDatabaseHelper.getInstance().getWritableDatabase();
                         sqLiteDatabase.delete("schedule","sched_id  =  ?",new String[]{String.valueOf(sc.getSched_id())});
+                        sqLiteDatabase.execSQL("update play set play_status = play_status-1 " +
+                                " where play_id = " +sc.getPlay_id());
+                        sqLiteDatabase.delete("ticket","sched_id  =  ?",new String[]{String.valueOf(sc.getSched_id())});
                         Toast.makeText(getApplicationContext(), "…æ≥˝¡À¿≤", Toast.LENGTH_SHORT).show();
                         initScheduleData();
                         scheduleAdapter = new ScheduleAdapter(getApplication(),R.layout.schedule_item,scheduleList);
@@ -196,6 +199,7 @@ public class ScheduleManageActivity extends AppCompatActivity {
             } while (cursor.moveToNext());
 
         }
+        cursor.close();
 
     }
     @Override

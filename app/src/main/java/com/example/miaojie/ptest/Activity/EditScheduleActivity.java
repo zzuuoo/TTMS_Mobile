@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +19,7 @@ import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 
 import com.example.miaojie.ptest.R;
+import com.example.miaojie.ptest.Utils.LoadingDialog;
 import com.example.miaojie.ptest.Utils.MyDatabaseHelper;
 import com.example.miaojie.ptest.pojo.Play;
 import com.example.miaojie.ptest.pojo.Schedule;
@@ -44,6 +47,8 @@ public class EditScheduleActivity extends AppCompatActivity implements View.OnCl
     private EditText ticket_price;
     private EditText sched_date;
     private EditText sched_time;
+    private Handler handler;
+    private LoadingDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +56,20 @@ public class EditScheduleActivity extends AppCompatActivity implements View.OnCl
         setContentView(R.layout.activity_edit_schedule);
         Intent intent = this.getIntent();
         schedule = (Schedule) intent.getSerializableExtra("schedule");
+        dialog = new LoadingDialog(EditScheduleActivity.this,"更新中...");
+        handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what)
+                {
+                    case 1:
+                        dialog.close();
+                        Toast.makeText(EditScheduleActivity.this,"更新票成功",Toast.LENGTH_SHORT).show();
+                        finish();
+                        break;
+                }
+            }
+        };
         init();
     }
     public void init()
@@ -93,6 +112,7 @@ public class EditScheduleActivity extends AppCompatActivity implements View.OnCl
             } while (cursor.moveToNext());
 
         }
+        cursor.close();
         sure = (Button)findViewById(R.id.sure_editschedule);
         cancle=(Button)findViewById(R.id.cancel_editschedule);
         spinnerPlay = (Spinner)findViewById(R.id.edit_play_spinner);
@@ -191,19 +211,64 @@ public class EditScheduleActivity extends AppCompatActivity implements View.OnCl
                     contentValues.put("sched_ticket_price",ticket_price.getText().toString());
                     contentValues.put("sched_time",sd1);
 
-                    try {
-                        sqLiteDatabase.update("schedule",contentValues,"sched_id = ?",
+
+                    int up =     sqLiteDatabase.update("schedule",contentValues,"sched_id = ?",
                                 new String[]{String.valueOf(schedule.getSched_id())});
 //                        contentValues.put("studio_flag",0);
 //                        sqLiteDatabase.update("studio",contentValues,"studio_id = ?",
 //                                new String[]{String.valueOf(s.getStudio_id())});
-                    }catch (Exception e)
-                    {
-                        this.setResult(0);
-                        finish();
-                    }
-                    this.setResult(1);
-                    finish();
+                   if(up==1)
+                   {
+                       this.setResult(1);
+                       if(p.getPlay_id()!=schedule.getPlay_id())
+                       {
+                           sqLiteDatabase.execSQL("update play set play_status = play_status-1 " +
+                                   " where play_id = " +schedule.getPlay_id());
+                       }else{
+                           sqLiteDatabase.execSQL("update play set play_status = play_status+1 " +
+                                   " where play_id = " +p.getPlay_id());
+                       }
+                   }else{
+                       this.setResult(0);
+                   }
+                   dialog.show();
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            MyDatabaseHelper myDatabaseHelper = MyDatabaseHelper.getInstance();
+                            SQLiteDatabase sqLiteDatabase = myDatabaseHelper.getWritableDatabase();
+
+                            ContentValues contentValues = new ContentValues();
+
+                            sqLiteDatabase.delete("ticket","sched_id = ?",new String[]{String.valueOf(schedule.getSched_id())});
+
+                            Cursor cursor = sqLiteDatabase.query("seat",null,"studio_id = ?",new String[]{String.valueOf(s.getStudio_id())},null,null,null);
+                            if(cursor.moveToFirst())
+                            {
+
+                                do{
+
+                                    if(cursor.getInt(cursor.getColumnIndex("seat_status"))==1)
+                                    {
+                                        contentValues.clear();
+                                        contentValues.put("seat_id", cursor.getInt(cursor.getColumnIndex("seat_id")));
+                                        contentValues.put("sched_id", schedule.getSched_id());
+                                        contentValues.put("ticket_price",ticket_price.getText().toString());
+                                        contentValues.put("ticket_status",0);
+                                        sqLiteDatabase.insert("ticket",null,contentValues);
+                                    }
+
+                                }while (cursor.moveToNext());
+                            }
+                            cursor.close();
+                            Message message = new Message();
+                            message.what = 1;
+                            handler.sendMessage(message);
+                        }
+                    }).start();
+
+//                    finish();
                 }
                 break;
         }

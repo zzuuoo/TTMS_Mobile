@@ -1,6 +1,5 @@
 package com.example.miaojie.ptest.View;
 
-import android.widget.ImageView;
 
 /**
  * Created by miaojie on 2017/5/18.
@@ -19,7 +18,6 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
 import com.example.miaojie.ptest.R;
 

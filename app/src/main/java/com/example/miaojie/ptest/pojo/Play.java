@@ -15,7 +15,7 @@ public class Play implements Serializable
     private String play_image;
     private int play_length;
     private double play_ticket_price;
-    private int play_status;
+    private int play_status;//<=0´ıÊÛ£¬>0 ÔÚÊÛ
 
     public String toString()
     {

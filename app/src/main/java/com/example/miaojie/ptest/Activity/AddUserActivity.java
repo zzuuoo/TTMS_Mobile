@@ -76,14 +76,15 @@ public class AddUserActivity extends AppCompatActivity implements View.OnClickLi
                     contentValues1.put("type",0);
                 }
                 contentValues1.put("head_path","我是头像路径");
-                try {
-                    sqLiteDatabase.insert("employee",null,contentValues);
-                    sqLiteDatabase.insert("user",null,contentValues1);
-                }catch (Exception e)
+
+                long in = sqLiteDatabase.insert("employee",null,contentValues);
+                long in1 = sqLiteDatabase.insert("user",null,contentValues1);
+                if(in==-1||in1==-1)
                 {
-                    this.setResult(0);
-                }
-                this.setResult(1);
+                       this.setResult(0);
+                }else{
+                       this.setResult(1);
+                   }
                 finish();
                 break;
             case R.id.cancel_addUser:

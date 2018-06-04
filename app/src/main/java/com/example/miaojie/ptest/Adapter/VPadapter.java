@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.example.miaojie.ptest.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by miaojie on 2017/3/17.

@@ -132,6 +132,7 @@ public class StudioManageActivity extends AppCompatActivity {
 
                         SQLiteDatabase sqLiteDatabase = MyDatabaseHelper.getInstance().getWritableDatabase();
                         sqLiteDatabase.delete("studio","studio_id  =  ?",new String[]{String.valueOf(s.getStudio_id())});
+                        sqLiteDatabase.delete("seat","studio_id = ?",new String[]{String.valueOf(s.getStudio_id())});
                         Toast.makeText(getApplicationContext(), "É¾³ý³É¹¦"+s.getStudio_id(), Toast.LENGTH_SHORT).show();
                         setStudioData();
                         studioAdapter = new StudioAdapter(getApplicationContext(), R.layout.studio_item, studio_list);
@@ -168,6 +169,8 @@ public class StudioManageActivity extends AppCompatActivity {
             } while (cursor.moveToNext());
 
         }
+
+        cursor.close();
     }
 
     @Override

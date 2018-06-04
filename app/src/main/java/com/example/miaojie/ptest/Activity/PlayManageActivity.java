@@ -187,6 +187,7 @@ public class PlayManageActivity extends AppCompatActivity {
                 list.add(p);
             }while (cursor.moveToNext());
         }
+        cursor.close();
 
 
     }

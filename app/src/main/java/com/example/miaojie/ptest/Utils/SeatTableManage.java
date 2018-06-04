@@ -2,8 +2,9 @@ package com.example.miaojie.ptest.Utils;
 
 
 /**
- * Created by miaojie on 2017/3/21.
+ * Created by zuo on 2018/3/21.
  */
+
 import android.animation.Animator;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
@@ -28,16 +29,13 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.Toast;
 
 import com.example.miaojie.ptest.R;
+import com.example.miaojie.ptest.pojo.Seat;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-/**
- * Created by baoyunlong on 16/6/16.
- */
 public class SeatTableManage extends View {
     private final boolean DBG = false;
 
@@ -102,6 +100,7 @@ public class SeatTableManage extends View {
      * 座位已经售出时的图片
      */
     Bitmap seatSoldBitmap;
+
 
     Bitmap overviewBitmap;
 
@@ -217,31 +216,22 @@ public class SeatTableManage extends View {
     int overview_checked;
     int overview_sold;
     int txt_color;
-    int seatCheckedResID;
-    int seatSoldResID;
-    int seatAvailableResID;
+    int seatCheckedResID;//不可用
+    int seatSoldResID;//损坏
+    int seatAvailableResID;//可用
 
     boolean isOnClick;
 
-    /**
-     * 座位已售
-     */
-    private static final int SEAT_TYPE_SOLD = 1;
-
-    /**
-     * 座位已经选中
-     */
-    private static final int SEAT_TYPE_SELECTED = 2;
 
     /**
      * 座位可选
      */
-    private static final int SEAT_TYPE_AVAILABLE = 3;
+    private static final int SEAT_TYPE_AVAILABLE = 1;
 
     /**
      * 座位不可用
      */
-    private static final int SEAT_TYPE_NOT_AVAILABLE = 4;
+    private static final int SEAT_TYPE_NOT_AVAILABLE = 0;
 
     private int downX, downY;
     private boolean pointer;
@@ -280,6 +270,26 @@ public class SeatTableManage extends View {
      */
     private int seatHeight;
 
+
+    /**
+     * 座位
+     * @param context
+     */
+    private ArrayList<Seat> seats = new ArrayList<>();
+
+    public void setSeats(ArrayList<Seat> seats)
+    {
+        this.seats=seats;
+
+    }
+
+    public ArrayList<Seat> getSeats()
+    {
+        return seats;
+    }
+
+
+
     public SeatTableManage(Context context) {
         super(context);
     }
@@ -304,6 +314,8 @@ public class SeatTableManage extends View {
         super(context, attrs, defStyleAttr);
         init(context,attrs);
     }
+
+
 
 
     @Override
@@ -389,7 +401,6 @@ public class SeatTableManage extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        long startTime = System.currentTimeMillis();
         if (row <= 0 || column == 0) {
             return;
         }
@@ -414,10 +425,6 @@ public class SeatTableManage extends View {
             Log.d("drawTime", "OverviewDrawTime:" + (System.currentTimeMillis() - s));
         }
 
-        if (DBG) {
-            long drawTime = System.currentTimeMillis() - startTime;
-            Log.d("drawTime", "totalDrawTime:" + drawTime);
-        }
     }
 
     @Override
@@ -482,7 +489,7 @@ public class SeatTableManage extends View {
     };
 
     Bitmap drawHeadInfo() {
-        String txt = "已坏";
+        String txt = "";
         float txtY = getBaseLine(headPaint, 0, headHeight);
         int txtWidth = (int) headPaint.measureText(txt);
         float spacing = dip2Px(10);
@@ -507,14 +514,14 @@ public class SeatTableManage extends View {
         float soldSeatBitmapY = startX + seatBitmap.getWidth() + spacing1 + txtWidth + spacing;
         tempMatrix.setScale(xScale1,yScale1);
         tempMatrix.postTranslate(soldSeatBitmapY,(headHeight - seatHeight) / 2);
-        canvas.drawBitmap(seatSoldBitmap, tempMatrix, headPaint);
-        canvas.drawText("已坏", soldSeatBitmapY + seatWidth + spacing1, txtY, headPaint);
+//        canvas.drawBitmap(seatSoldBitmap, tempMatrix, headPaint);
+//        canvas.drawText("已坏", soldSeatBitmapY + seatWidth + spacing1, txtY, headPaint);
 
         float checkedSeatBitmapX = soldSeatBitmapY + seatSoldBitmap.getWidth() + spacing1 + txtWidth + spacing;
         tempMatrix.setScale(xScale1,yScale1);
         tempMatrix.postTranslate(checkedSeatBitmapX,(headHeight - seatHeight) / 2);
         canvas.drawBitmap(checkedSeatBitmap, tempMatrix, headPaint);
-        canvas.drawText("空缺", checkedSeatBitmapX + spacing1 + seatWidth, txtY, headPaint);
+        canvas.drawText("不可用", checkedSeatBitmapX + spacing1 + seatWidth, txtY, headPaint);
 
         //绘制分割线
         headPaint.setStrokeWidth(1);
@@ -585,47 +592,37 @@ public class SeatTableManage extends View {
                 tempMatrix.postScale(scaleX, scaleY, left, top);
 
                 switch (seatType) {
-                    case SEAT_TYPE_AVAILABLE:
+                    case SEAT_TYPE_AVAILABLE://可用
                         canvas.drawBitmap(seatBitmap, tempMatrix, paint);
+//                        drawText(canvas, i, j, top, left);
                         break;
-                    case SEAT_TYPE_NOT_AVAILABLE:
-                        break;
-                    case SEAT_TYPE_SELECTED:
+                    case SEAT_TYPE_NOT_AVAILABLE://不可用
                         canvas.drawBitmap(checkedSeatBitmap, tempMatrix, paint);
                         drawText(canvas, i, j, top, left);
-                        break;
-                    case SEAT_TYPE_SOLD:
-                        canvas.drawBitmap(seatSoldBitmap, tempMatrix, paint);
                         break;
                 }
 
             }
         }
 
-        if (DBG) {
-            long drawTime = System.currentTimeMillis() - startTime;
-            Log.d("drawTime", "seatDrawTime:" + drawTime);
-        }
     }
 
     private int getSeatType(int row, int column) {
 
-        if (isHave(getID(row, column)) >= 0) {
-            return SEAT_TYPE_SELECTED;
-        }
 
-        if (seatChecker != null) {
-            if (!seatChecker.isValidSeat(row, column)) {
-                return SEAT_TYPE_NOT_AVAILABLE;
-            } else if (seatChecker.isSold(row, column)) {
-                return SEAT_TYPE_SOLD;
+        for(int i=0;i<seats.size();i++)
+        {
+            if(seats.get(i).getSeat_row()-1==row&&seats.get(i).getSeat_column()-1==column)
+            {
+                return seats.get(i).getSeat_status();
             }
         }
 
-        return SEAT_TYPE_AVAILABLE;
+
+        return SEAT_TYPE_NOT_AVAILABLE;
     }
 
-    private int getID(int row, int column) {
+    public int getID(int row, int column) {
         return row * this.column + (column + 1);
     }
 
@@ -673,9 +670,7 @@ public class SeatTableManage extends View {
             canvas.drawText(txt1, startX, getBaseLine(txtPaint, top + center, top + center + seatHeight / 2), txtPaint);
         }
 
-        if (DBG) {
-            Log.d("drawTest:", "top:" + top);
-        }
+
     }
 
     int bacColor = Color.parseColor("#7e000000");
@@ -777,13 +772,9 @@ public class SeatTableManage extends View {
                         overviewPaint.setColor(Color.WHITE);
                         break;
                     case SEAT_TYPE_NOT_AVAILABLE:
-                        continue;
-                    case SEAT_TYPE_SELECTED:
                         overviewPaint.setColor(overview_checked);
                         break;
-                    case SEAT_TYPE_SOLD:
-                        overviewPaint.setColor(overview_sold);
-                        break;
+
                 }
 
                 float left;
@@ -903,7 +894,7 @@ public class SeatTableManage extends View {
         return results;
     }
 
-    private int isHave(Integer seat) {
+    public int isHave(Integer seat) {
         return Collections.binarySearch(selects, seat);
     }
 
@@ -1086,26 +1077,25 @@ public class SeatTableManage extends View {
                     int tempY = (int) ((i * seatHeight + i * verSpacing) * getMatrixScaleY() + getTranslateY());
                     int maxTempY = (int) (tempY + seatHeight * getMatrixScaleY());
 
-                    if (seatChecker != null && seatChecker.isValidSeat(i, j) && !seatChecker.isSold(i, j)) {
+                    if (seatChecker != null  && !seatChecker.isSold(i, j)) {
                         if (x >= tempX && x <= maxTemX && y >= tempY && y <= maxTempY) {
-                            int id = getID(i, j);
-                            int index = isHave(id);
-                            if (index >= 0) {
-                                remove(index);
-                                if (seatChecker != null) {
-                                    seatChecker.unCheck(i, j);
+                            //在此弄可选与不可选的座位
+                            for(int a =0 ;a<seats.size();a++)
+                            {
+                                if(seats.get(a).getSeat_row()-1==i&&seats.get(a).getSeat_column()-1==j)
+                                {
+                                    Log.e("Seat状态：",seats.get(a).getSeat_status()+"");
+                                    if(seats.get(a).getSeat_status()==1)
+                                    {
+                                        seats.get(a).setSeat_status(0);
+
+                                    }else {
+                                        seats.get(a).setSeat_status(1);
+
                                 }
-                            } else {
-                                if (selects.size() >= maxSelected) {
-                                    Toast.makeText(getContext(), "最多只能选择" + maxSelected + "个", Toast.LENGTH_SHORT).show();
-                                    return super.onSingleTapConfirmed(e);
-                                } else {
-                                    addChooseSeat(i, j);
-                                    if (seatChecker != null) {
-                                        seatChecker.checked(i, j);
-                                    }
                                 }
                             }
+
                             isNeedDrawSeatBitmap = true;
                             isDrawOverviewBitmap = true;
                             float currentScaleY = getMatrixScaleY();
@@ -1151,7 +1141,7 @@ public class SeatTableManage extends View {
         boolean isValidSeat(int row, int column);
 
         /**
-         * 是否已售
+         * 是否已坏
          *
          * @param row
          * @param column

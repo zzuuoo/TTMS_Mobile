@@ -79,7 +79,7 @@ public class PlayEditActivity extends AppCompatActivity implements View.OnClickL
         switch (view.getId())
         {
             case R.id.sure_editplay:
-                try {
+
                     MyDatabaseHelper myDatabaseHelper = MyDatabaseHelper.getInstance();
                     SQLiteDatabase db = myDatabaseHelper.getWritableDatabase();
                     ContentValues contentValues = new ContentValues();
@@ -94,16 +94,18 @@ public class PlayEditActivity extends AppCompatActivity implements View.OnClickL
                         contentValues.put("play_status",String.valueOf(1));
                     }else {
                         contentValues.put("play_status",String.valueOf(0));
-                    };
-                    db.update("play",contentValues,"play_id = ?",
-                            new String[]{String.valueOf(play.getPlay_id())});
-                    this.setResult(1);
+                    }
 
-                }catch (Exception e){
-                    this.setResult(0);
-                }finally {
-                    finish();
-                }
+                    int up = db.update("play",contentValues,"play_id = ?",
+                            new String[]{String.valueOf(play.getPlay_id())});
+                    if(up==1)
+                    {
+                        this.setResult(1);
+                    }else{
+                        this.setResult(0);
+                    }
+
+              finish();
                 break;
             case R.id.cancel_editplay:
                 this.setResult(-1);

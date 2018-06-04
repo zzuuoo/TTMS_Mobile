@@ -5,8 +5,7 @@ public class Seat {
     private int studio_id;
     private int seat_row;
     private int seat_column;
-    private int seat_status;//0空，1非空，-1已损坏
-
+    private int seat_status;//0不可用,1可用
     public int getSeat_id() {
         return seat_id;
     }

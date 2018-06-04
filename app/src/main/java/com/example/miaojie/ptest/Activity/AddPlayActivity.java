@@ -21,7 +21,6 @@ public class AddPlayActivity extends AppCompatActivity implements View.OnClickLi
     private EditText play_lang;
     private EditText play_introduction;
     private EditText play_ticket;
-//    private EditText play_status;
     private RadioButton radioButton1;
     private RadioButton radioButton0;
     private TextView play_image;
@@ -41,7 +40,6 @@ public class AddPlayActivity extends AppCompatActivity implements View.OnClickLi
         play_lang = (EditText)findViewById(R.id.play_lang_add);
         play_introduction = (EditText)findViewById(R.id.play_introduction_add);
         play_ticket=(EditText)findViewById(R.id.play_add_ticket);
-//        play_status=(EditText)findViewById(R.id.play_add_status);
         radioButton0 = (RadioButton)findViewById(R.id.add_status_0);
         radioButton1 = (RadioButton)findViewById(R.id.add_status_1);
         play_image=(TextView)findViewById(R.id.play_image_add);
@@ -58,7 +56,6 @@ public class AddPlayActivity extends AppCompatActivity implements View.OnClickLi
         switch (view.getId())
         {
             case R.id.sure_addplay:
-                try{
                     Play p = new Play();
                     p.setPlay_name(play_name.getText().toString());
                     p.setPlay_introdution(play_introduction.getText().toString());
@@ -84,15 +81,16 @@ public class AddPlayActivity extends AppCompatActivity implements View.OnClickLi
                     contentValues.put("play_length",p.getPlay_length());
                     contentValues.put("play_ticket_price",p.getPlay_ticket_price());
                     contentValues.put("play_status",p.getPlay_status());
-                    sqLiteDatabase.insert("play",null,contentValues);
-                    this.setResult(1);
-
-                }catch (Exception e)
+                    long in = sqLiteDatabase.insert("play",null,contentValues);
+                if(in==-1)
                 {
                     this.setResult(0);
-                }finally {
-                    finish();
+                }else{
+                    this.setResult(1);
                 }
+                finish();
+
+
                 break;
             case R.id.cancel_addplay:
                 this.setResult(-1);

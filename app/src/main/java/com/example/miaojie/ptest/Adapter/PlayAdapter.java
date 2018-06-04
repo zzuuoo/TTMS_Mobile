@@ -55,15 +55,9 @@ public class PlayAdapter extends ArrayAdapter<Play>
              view = convertView;
              holder = (ViewHolder)convertView.getTag();
          }
-//         TextView play_name = (TextView)view.findViewById(R.id.Play_Item_Name);
-//         TextView play_length = (TextView)view.findViewById(R.id.play_length);
-//         TextView play_introduction = (TextView)view.findViewById(R.id.Play_Item_Introduction);
-//         TextView play_lang_type = (TextView)view.findViewById(R.id.Play_Item_type_lang);
-//         ImageView play_image = (ImageView)view.findViewById(R.id.play_Item_Img);
-//         TextView price = (TextView)view.findViewById(R.id.play_price);
-//         TextView status = (TextView)view.findViewById(R.id.play_status);
+
          holder.price.setText(String.valueOf(p.getPlay_ticket_price()));
-         if(p.getPlay_status()==0){
+         if(p.getPlay_status()<=0){
              holder.status.setText("Д§Ъл");
          }else{
              holder.status.setText("дкЪл");

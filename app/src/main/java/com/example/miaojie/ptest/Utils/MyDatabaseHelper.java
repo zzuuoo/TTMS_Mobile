@@ -1,10 +1,8 @@
 package com.example.miaojie.ptest.Utils;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.widget.Toast;
 
 public class MyDatabaseHelper extends SQLiteOpenHelper {
 
@@ -126,17 +124,15 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(CREATE_TICKET);
         sqLiteDatabase.execSQL(CREATE_SALE);
         sqLiteDatabase.execSQL(CREATE_SALE_ITEM);
-        ContentValues contentValues = new ContentValues();
-        ContentValues contentValues1 = new ContentValues();
-        contentValues.put("emp_no","admin");
-        contentValues.put("emp_name","root");
-        contentValues1.put("emp_no","admin");
-        contentValues1.put("emp_pass","admin");
-        contentValues1.put("type",1);
-        contentValues1.put("head_path","我是头像路径");
-        sqLiteDatabase.insert("employee",null,contentValues);
-        sqLiteDatabase.insert("user",null,contentValues1);
-        Toast.makeText(context,"创建数据库成功",Toast.LENGTH_SHORT).show();
+        sqLiteDatabase.execSQL("INSERT INTO "
+                + "employee"
+                + " (emp_no, emp_name)"
+                + " VALUES ('root', 'root');");
+        sqLiteDatabase.execSQL("INSERT INTO "
+                + "user"
+                + " (emp_no, emp_pass, type, head_path)"
+                + " VALUES ('root', 'tooy', 1,'root');");
+//        Toast.makeText(context,"创建数据库成功",Toast.LENGTH_SHORT).show();
 
     }
 

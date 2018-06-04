@@ -6,18 +6,19 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.miaojie.ptest.Adapter.VPadapter;
 import com.example.miaojie.ptest.Fragment.ManageFragment;
 import com.example.miaojie.ptest.Fragment.MoiveListFragment;
 import com.example.miaojie.ptest.Fragment.PersonalFragment;
 import com.example.miaojie.ptest.R;
-import com.example.miaojie.ptest.Utils.SeatTable;
 import com.example.miaojie.ptest.pojo.Employee;
 import com.example.miaojie.ptest.pojo.OrderInfo;
 import com.example.miaojie.ptest.pojo.User;
@@ -33,18 +34,15 @@ public class MainActivity extends AppCompatActivity {
     public static User user=null;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private RecyclerView recyclerView;
-    private SeatTable seatTableView;
     private ArrayList<Fragment>fragmentArrayList;
     private ArrayList<Integer>piclist;
     private ArrayList<String> title;
-//    private BBSFragment fragment;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
 
         tabLayout= (TabLayout) findViewById(R.id.tablayout);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
@@ -73,20 +71,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        user= (User) getIntent().getSerializableExtra("user");
-//        MyDatabaseHelper myDatabaseHelper = MyDatabaseHelper.getInstance();
-//        SQLiteDatabase sqLiteDatabase = myDatabaseHelper.getReadableDatabase();
-//        Cursor cursor  = sqLiteDatabase.query("employee",null,"emp_no = ?",new String[]{user.getEmp_no()},null,null,null,null);
-//        if(cursor.moveToFirst())
-//        {
-//            employee = new Employee();
-//            employee.setEmp_id(cursor.getInt(cursor.getColumnIndex("emp_id")));
-//            employee.setEmp_no(cursor.getString(cursor.getColumnIndex("emp_no")));
-//            employee.setEmp_addr(cursor.getString(cursor.getColumnIndex("emp_addr")));
-//            employee.setEmp_tel_num(cursor.getString(cursor.getColumnIndex("emp_tel_numm")));
-//            employee.setEmp_email(cursor.getString(cursor.getColumnIndex("emp_email")));
-//            employee.setEmp_name(cursor.getString(cursor.getColumnIndex("emp_name")));
-//        }
+//        user= (User) getIntent().getSerializableExtra("user");
         if(fragmentArrayList.size()<3)
         {
             fragmentArrayList.add(new ManageFragment());
@@ -139,6 +124,34 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
+    @Override
+   protected void onSaveInstanceState(Bundle outstate) {
+        super.onSaveInstanceState(outstate);
+
+    }
+    private long exittime=0;
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        if(keyCode==KeyEvent.KEYCODE_BACK&&event.getAction()==KeyEvent.ACTION_DOWN)
+        {
+            if((System.currentTimeMillis()-exittime>2000)){
+                Toast.makeText(getApplicationContext(),"再按一次退出应用",Toast.LENGTH_SHORT).show();
+                exittime=System.currentTimeMillis();
+            }  else{
+                MainActivity.isLogin=false;
+                MainActivity.user=null;
+                ((TextView) findViewById(R.id.me_layout_name_tips)).setClickable(true);
+                ((ImageView)findViewById(R.id.me_layout_head_image)).setClickable(true);
+                this.finish();
+
+            }
+            return true;
+        }
+
+        return super.onKeyDown(keyCode,event);
+    }
+
+
 
 
 }

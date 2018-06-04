@@ -7,7 +7,7 @@ public class Ticket {
     private int seat_id;
     private int sched_id;
     private double ticket_price;
-    private int ticket_status;
+    private int ticket_status;//0Œ¥ €°¢1“— €
     private Date ticket_locked_time;
 
     public int getTicket_id() {

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -93,16 +94,18 @@ public class EditUserActivity extends AppCompatActivity implements View.OnClickL
                     contentValues1.put("type",0);
                 }
                 contentValues1.put("head_path","我是头像路径");
-                try {
-                    sqLiteDatabase.update("employee",contentValues,"emp_id = ?",
+                int up = sqLiteDatabase.update("employee",contentValues,"emp_id = ?",
                             new String[]{String.valueOf(employee.getEmp_id())});
-                    sqLiteDatabase.update("user",contentValues1,"emp_no = ?",
+                Log.e("upppppp",up+"");
+                int up1 = sqLiteDatabase.update("user",contentValues1,"emp_no = ?",
                             new String[]{user.getEmp_no()});
-                }catch (Exception e)
+                if(up==1&&up==1)
                 {
-                    this.setResult(0);
+                    this.setResult(1);//成功  0失败
+                }else{
+                    this.setResult(0);//成功  0失败
                 }
-                this.setResult(1);//成功  0失败
+
                 finish();
                 break;
             case R.id.cancel_editUser:

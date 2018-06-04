@@ -64,6 +64,9 @@ public class PersonalFragment extends Fragment{
                             head_image.setImageResource(R.drawable.home_people);
                             userNickName.setClickable(true);
                             head_image.setClickable(true);
+                            getActivity().finish();
+                            startActivity(new Intent(getContext(), LoginActivity.class));
+
                         }
                     });
                     dialog.setNegativeButton("È¡Ïû", new DialogInterface.OnClickListener() {
@@ -97,6 +100,8 @@ public class PersonalFragment extends Fragment{
                 {
                     getActivity().finish();
                     startActivity(new Intent(getContext(), LoginActivity.class));
+                }else{
+
                 }
 
             }
@@ -108,6 +113,8 @@ public class PersonalFragment extends Fragment{
                 {
                     getActivity().finish();
                     startActivity(new Intent(getContext(), LoginActivity.class));
+                }else{
+
                 }
             }
         });
@@ -146,7 +153,7 @@ public class PersonalFragment extends Fragment{
     @Override
     public void onStart() {
         super.onStart();
-        if(MainActivity.user!=null)
+        if(MainActivity.user!=null&&MainActivity.isLogin)
         {
             userNickName.setText(MainActivity.user.getEmp_no());
             head_image.setImageResource(R.drawable.eye_can_see);

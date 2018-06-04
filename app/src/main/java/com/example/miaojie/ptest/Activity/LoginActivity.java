@@ -31,6 +31,7 @@ public class LoginActivity extends Activity {
     private Button loginButton;
     private Button registerButton;
     private CheckBox remeber;
+    private CheckBox antoLogin;
 //    private ArrayList<UserInfo>userInfos;
     private Handler handler;
     @Override
@@ -42,6 +43,7 @@ public class LoginActivity extends Activity {
         loginButton= (Button) findViewById(R.id.login_login);
         registerButton= (Button) findViewById(R.id.login_register);
         remeber = (CheckBox)findViewById(R.id.remeber_password);
+        antoLogin = (CheckBox)findViewById(R.id.auto_login);
         readAccount();
 
         handler=new Handler(){
@@ -62,12 +64,27 @@ public class LoginActivity extends Activity {
                             //以键值对的显示将用户名和密码保存到sp中
                             ed.putString("account", userName.getText().toString());
                             ed.putString("password", passWord.getText().toString());
+                            ed.putBoolean("remeber",true);
+//                            Toast.makeText(getApplication(),"保存密码成功",Toast.LENGTH_SHORT).show();
                             //提交用户名和密码
+                            if(antoLogin.isChecked())
+                            {
+                                ed.putBoolean("antoLogin",true);
+                            }else{
+                                ed.putBoolean("antoLogin",false);
+                            }
                             ed.commit();
                         }else{
-                            SharedPreferences sp = getSharedPreferences(userName.getText().toString(), Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sp.edit(); editor.clear(); editor.commit();
-                        }
+                            SharedPreferences sp = getSharedPreferences("user", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sp.edit();
+                            editor.remove("account");
+                            editor.remove("password");
+                            editor.putBoolean("remeber",false);
+                            editor.putBoolean("antoLogin",false);
+
+                            editor.commit();
+//                            Toast.makeText(getApplication(),"取消密码成功",Toast.LENGTH_SHORT).show();
+                         }
                         MainActivity.isLogin=true;
                         Intent intent=new Intent(LoginActivity.this,MainActivity.class);
                         intent.putExtra("user",(User)msg.obj);
@@ -92,7 +109,7 @@ public class LoginActivity extends Activity {
                         User user = null;
                         MyDatabaseHelper myDatabaseHelper = MyDatabaseHelper.getInstance();
                         SQLiteDatabase sqLiteDatabase = myDatabaseHelper.getReadableDatabase();
-                        Cursor cursor = sqLiteDatabase.query("user",null," emp_no = ?",new String[]{userName.getText().toString()},null,null,null);
+                        Cursor cursor = sqLiteDatabase.query("user",null," emp_no = ? AND emp_pass = ?",new String[]{userName.getText().toString(),passWord.getText().toString()},null,null,null);
                         if(cursor.moveToFirst()){
                             user = new User();
                             user.setEmp_no(cursor.getString(cursor.getColumnIndex("emp_no")));
@@ -100,12 +117,14 @@ public class LoginActivity extends Activity {
                             user.setType(cursor.getInt(cursor.getColumnIndex("type")));
                             user.setHead_path(cursor.getString(cursor.getColumnIndex("head_path")));
                         }
-                        if(user==null)
+                        cursor.close();
+                        if(user==null )
                         {
                             message.what=1;
                             handler.sendMessage(message);
                             return;
                         }
+
 
                         message.what=2;
                         message.obj=user;
@@ -131,13 +150,22 @@ public class LoginActivity extends Activity {
         //创建SharedPreferences对象
         SharedPreferences sp = getSharedPreferences("user", MODE_PRIVATE);
         //获得保存在SharedPredPreferences中的用户名和密码
-        String account = sp.getString("account", "");
-        String password = sp.getString("password", "");
-        //在用户名和密码的输入框中显示用户名和密码
-        userName.setText(account);
-        passWord.setText(password);
-        if(account!=null&&!account.equals("")){
+        if(sp.getBoolean("remeber",false))
+        {
+            String account = sp.getString("account", "");
+            String password = sp.getString("password", "");
+            //在用户名和密码的输入框中显示用户名和密码
+            userName.setText(account);
+            passWord.setText(password);
             remeber.setChecked(true);
+            if(sp.getBoolean("antoLogin",false))
+            {
+                antoLogin.setChecked(true);
+            }
+        }
+       else{
+            remeber.setChecked(false);
+            antoLogin.setChecked(false);
         }
     }
 

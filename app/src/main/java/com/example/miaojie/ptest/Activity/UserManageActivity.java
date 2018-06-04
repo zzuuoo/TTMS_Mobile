@@ -196,6 +196,7 @@ public class  UserManageActivity extends AppCompatActivity implements View.OnCli
             } while (cursor.moveToNext());
 
         }
+        cursor.close();
 
     }
 
