@@ -16,6 +16,7 @@ import java.util.List;
 
 public class PlayAdapter extends ArrayAdapter<Play>
 {
+
     static class ViewHolder{
         TextView play_name ;
         TextView play_length ;
@@ -32,6 +33,7 @@ public class PlayAdapter extends ArrayAdapter<Play>
          resourceid = resource;
          this.context=context;
      }
+
 
      public View getView(int position, View convertView, ViewGroup parent)
      {

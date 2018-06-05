@@ -47,6 +47,8 @@ public class AddPlayActivity extends AppCompatActivity implements View.OnClickLi
         cancel_addplay=(Button)findViewById(R.id.cancel_addplay);
         sure_addplay.setOnClickListener(this);
         cancel_addplay.setOnClickListener(this);
+        radioButton1.setClickable(false);
+        radioButton0.setClickable(false);
 
 
     }

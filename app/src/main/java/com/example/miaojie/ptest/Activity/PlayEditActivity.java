@@ -52,6 +52,8 @@ public class PlayEditActivity extends AppCompatActivity implements View.OnClickL
         radioButton0 = (RadioButton)findViewById(R.id.status_0);
         radioButton1 = (RadioButton)findViewById(R.id.status_1);
         radioGroup = (RadioGroup)findViewById(R.id.radiogroup);
+        radioButton1.setClickable(false);
+        radioButton0.setClickable(false);
 //        play_status=(EditText) findViewById(R.id.play_edit_status);
         sure_editplay = (Button) findViewById(R.id.sure_editplay);
         sure_editplay.setOnClickListener(this);

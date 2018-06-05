@@ -59,6 +59,8 @@ public class EditStudioActivity extends AppCompatActivity implements View.OnClic
         }else {
             radioButton1.setChecked(true);
         }
+        radioButton1.setClickable(false);
+        radioButton0.setClickable(false);
         studio_intro = (TextView)findViewById(R.id.studio_introduction_edit);
         studio_intro.setText(studio.getStudio_introduction());
         sure=(Button)findViewById(R.id.sure_editstudio);

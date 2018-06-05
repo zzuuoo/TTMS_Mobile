@@ -195,6 +195,8 @@ public class AddScheduleActivity extends AppCompatActivity implements View.OnCli
                     }else{
                          sqLiteDatabase.execSQL("update play set play_status = play_status+1 " +
                                  " where play_id = " +p.getPlay_id());
+                         sqLiteDatabase.execSQL("update studio set studio_flag = studio_flag+1 " +
+                                 " where studio_id = " +s.getStudio_id());
                         this.setResult(1);
                     }
                     Cursor cursor = sqLiteDatabase.rawQuery("select last_insert_rowid() from schedule",null);

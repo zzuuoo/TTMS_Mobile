@@ -4,137 +4,63 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- android:theme="@style/AppTheme.NoActionBar" -->
     <application
         android:name=".Utils.MyApplication"
         android:allowBackup="true"
         android:alwaysRetainTaskState="true"
+        android:configChanges="orientation|keyboardHidden"
         android:icon="@drawable/icon1"
         android:label="@string/app_name"
+        android:launchMode="singleTask"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name=".Activity.SplashActivity"
             android:alwaysRetainTaskState="true"
-            android:label="@string/app_name"
-            android:launchMode="singleTask"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation|keyboardHidden">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-        <activity android:name=".Activity.MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+        <activity
+            android:name=".Activity.MainActivity"
             android:alwaysRetainTaskState="true"
             android:label="@string/app_name"
-            android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTask">></activity>
-        <activity
-            android:name=".Activity.ChoosSeatActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Activity.DetailedActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".Activity.PersonalInfoActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".Activity.BuyTicketChooseCinemaActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".Activity.BuyTicketChooseTimeActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".Activity.LoginActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".Activity.RegisterActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".Activity.OrderInfoActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".Activity.WebViewActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".Activity.PlayManageActivity"
-            android:label="影片管理"
-            android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTask"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar">
+            >
+        </activity>
+        <activity android:name=".Activity.ChoosSeatActivity" />
+        <activity android:name=".Activity.DetailedActivity" />
+        <activity android:name=".Activity.PersonalInfoActivity" />
+        <activity android:name=".Activity.BuyTicketChooseCinemaActivity" />
+        <activity android:name=".Activity.BuyTicketChooseTimeActivity" />
+        <activity android:name=".Activity.LoginActivity" />
+        <activity android:name=".Activity.RegisterActivity" />
+        <activity android:name=".Activity.OrderInfoActivity" />
+        <activity android:name=".Activity.WebViewActivity" />
+        <activity android:name=".Activity.PlayManageActivity" />
         <activity
             android:name=".Activity.UserManageActivity"
-            android:alwaysRetainTaskState="true"
-            android:launchMode="singleTask"
-            android:configChanges="orientation|keyboardHidden"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Activity.ScheduleManageActivity"
-            android:launchMode="singleTask"
-            android:configChanges="orientation|keyboardHidden"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Activity.StudioManageActivity"
-            android:launchMode="singleTask"
-            android:configChanges="orientation|keyboardHidden"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Activity.SeatManageActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTask"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Activity.AddPlayActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".Activity.PlayEditActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".Activity.AddStudioActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".Activity.EditStudioActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".Activity.AddScheduleActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".Activity.EditScheduleActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".Activity.StudioSeatManageActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTask"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Activity.AddUserActivity"
-            android:alwaysRetainTaskState="true"
-            android:configChanges="orientation|keyboardHidden"
-            android:launchMode="singleTask" />
+            android:alwaysRetainTaskState="true" />
+        <activity android:name=".Activity.ScheduleManageActivity" />
+        <activity android:name=".Activity.StudioManageActivity" />
+        <activity android:name=".Activity.SeatManageActivity" />
+        <activity android:name=".Activity.AddPlayActivity" />
+        <activity android:name=".Activity.PlayEditActivity" />
+        <activity android:name=".Activity.AddStudioActivity" />
+        <activity android:name=".Activity.EditStudioActivity" />
+        <activity android:name=".Activity.AddScheduleActivity" />
+        <activity android:name=".Activity.EditScheduleActivity" />
+        <activity android:name=".Activity.StudioSeatManageActivity" />
+        <activity android:name=".Activity.AddUserActivity" />
         <activity
             android:name=".Activity.EditUserActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:alwaysRetainTaskState="true"
-            android:launchMode="singleTask" />
-
+            android:alwaysRetainTaskState="true" />
+        <activity android:name=".Activity.ChooseSchedule" />
+        <activity android:name=".Activity.SaleTicketChooseSeat"></activity>
     </application>
 
 </manifest>

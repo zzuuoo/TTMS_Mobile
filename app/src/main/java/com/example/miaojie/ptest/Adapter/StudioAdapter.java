@@ -59,7 +59,7 @@ public class StudioAdapter extends ArrayAdapter<Studio> {
         holder.studio_row.setText(s.getStudio_row_count()+"");
         holder.studio_col.setText(s.getStudio_col_count()+"");
         holder.studio_introduction.setText(s.getStudio_introduction());
-        if(s.getStudio_flag()==1){
+        if(s.getStudio_flag()<1){
             holder.studio_status.setText("´ýÓÃ");
         }else{
             holder.studio_status.setText("ÔÚÓÃ");

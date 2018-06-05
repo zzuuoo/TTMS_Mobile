@@ -177,7 +177,7 @@ public class ChoosSeatActivity extends AppCompatActivity {
 
             }
         });
-        textView= (TextView) findViewById(R.id.Seat_Movie_Name);
+        textView= (TextView) findViewById(R.id.sale_ticket_play_name);
         textView.setText(getIntent().getStringExtra("MovieName"));
 
 //        toolbar.setNavigationOnClickListener();

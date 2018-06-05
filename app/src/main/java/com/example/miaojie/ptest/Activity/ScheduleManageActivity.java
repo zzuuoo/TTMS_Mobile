@@ -19,9 +19,7 @@ import com.example.miaojie.ptest.Adapter.ScheduleAdapter;
 import com.example.miaojie.ptest.R;
 import com.example.miaojie.ptest.Utils.MyApplication;
 import com.example.miaojie.ptest.Utils.MyDatabaseHelper;
-import com.example.miaojie.ptest.pojo.Play;
 import com.example.miaojie.ptest.pojo.Schedule;
-import com.example.miaojie.ptest.pojo.Studio;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,8 +30,6 @@ import java.util.List;
 public class ScheduleManageActivity extends AppCompatActivity {
     private List<Schedule> scheduleList = new ArrayList<>();
     private List<Schedule> searchlist = new ArrayList<Schedule>();
-    private List<Play> plays;
-    private List<Studio> studios;
     private Toolbar schedule_toolbar;
     private SearchView schdule_searchview;
     private Button schedule_add;
@@ -99,6 +95,8 @@ public class ScheduleManageActivity extends AppCompatActivity {
                         sqLiteDatabase.delete("schedule","sched_id  =  ?",new String[]{String.valueOf(sc.getSched_id())});
                         sqLiteDatabase.execSQL("update play set play_status = play_status-1 " +
                                 " where play_id = " +sc.getPlay_id());
+                        sqLiteDatabase.execSQL("update studio set studio_flag = studio_flag-1 " +
+                                " where studio_id = " +sc.getStudio_id());
                         sqLiteDatabase.delete("ticket","sched_id  =  ?",new String[]{String.valueOf(sc.getSched_id())});
                         Toast.makeText(getApplicationContext(), "…æ≥˝¡À¿≤", Toast.LENGTH_SHORT).show();
                         initScheduleData();

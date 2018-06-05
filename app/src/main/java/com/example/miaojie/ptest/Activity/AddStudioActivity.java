@@ -52,6 +52,8 @@ public class AddStudioActivity extends AppCompatActivity implements View.OnClick
         sure.setOnClickListener(this);
         cancle.setOnClickListener(this);
         dialog = new LoadingDialog(this,"ÃÌº”÷– ...");
+        radioButton1.setClickable(false);
+        radioButton0.setClickable(false);
 
         handler = new Handler(){
             @Override
@@ -87,11 +89,11 @@ public class AddStudioActivity extends AppCompatActivity implements View.OnClick
                 contentValues.put("studio_row_count",studio_row.getText().toString());
                 contentValues.put("studio_col_count",studio_col.getText().toString());
                 contentValues.put("studio_introduction",studio_intro.getText().toString());
-                if(radioButton1.isChecked()){
-                    contentValues.put("studio_flag",1);
-                }else {
+//                if(radioButton1.isChecked()){
+//                    contentValues.put("studio_flag",1);
+//                }else {
                     contentValues.put("studio_flag",0);
-                }
+//                }
                 long in = sqLiteDatabase.insert("studio",null,contentValues);
                 if(in==-1)
                 {

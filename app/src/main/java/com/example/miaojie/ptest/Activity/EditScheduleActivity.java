@@ -228,6 +228,15 @@ public class EditScheduleActivity extends AppCompatActivity implements View.OnCl
                            sqLiteDatabase.execSQL("update play set play_status = play_status+1 " +
                                    " where play_id = " +p.getPlay_id());
                        }
+                       if(s.getStudio_id()!=schedule.getStudio_id())
+                       {
+                           sqLiteDatabase.execSQL("update studio set studio_flag = studio_flag-1 " +
+                                   " where studio_id = " +schedule.getStudio_id());
+                       }else{
+                           sqLiteDatabase.execSQL("update studio set studio_flag = studio_flag+1 " +
+                                   " where studio_id = " +s.getStudio_id());
+                       }
+
                    }else{
                        this.setResult(0);
                    }
