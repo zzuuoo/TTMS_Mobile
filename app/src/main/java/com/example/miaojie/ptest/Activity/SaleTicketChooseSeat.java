@@ -28,6 +28,7 @@ import com.example.miaojie.ptest.pojo.Ticket;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class SaleTicketChooseSeat extends AppCompatActivity {
 
@@ -37,7 +38,7 @@ public class SaleTicketChooseSeat extends AppCompatActivity {
     private ArrayList<Seat> seats = new ArrayList<>();
     private ArrayList<Seat>chooseSeats = new ArrayList<>();
     private ArrayList<Ticket> tickets = new ArrayList<>();
-    private ArrayList<Ticket> choosetickets = new ArrayList<>();
+//    private ArrayList<Ticket> choosetickets = new ArrayList<>();
     private Handler handler;
     private Schedule schedule;
     private Play play;
@@ -202,13 +203,33 @@ public class SaleTicketChooseSeat extends AppCompatActivity {
                         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                         ContentValues contentValues = new ContentValues();
                         int count = 0;
+                        Cursor cursor=null;
+                        Date date=null;
                         for(Seat s:chooseSeats)
                         {
+
+//                            cursor = sqLiteDatabase.query("ticket",null,"seat_id = ? and sched_id = ?",
+//                                    new String[]{String.valueOf(s.getSeat_id()),String.valueOf(schedule.getSched_id())},null,null,null);
+//                            if(cursor.moveToFirst()){
+//                                try {
+//                                    date = format.parse(cursor.getString(cursor.getColumnIndex("ticket_locked_time")));
+//                                } catch (ParseException e) {
+//                                    e.printStackTrace();
+//                                }
+//                            }
+//                            if(date!=null&&date.getTime()+60*60*2*1000<new Date().getTime()){
+//                                continue;
+//                            }
+
                             contentValues.clear();
                             contentValues.put("ticket_status",1);
                             int x = sqLiteDatabase.update("ticket",contentValues,"seat_id = ? and sched_id = ?",
                                     new String[]{String.valueOf(s.getSeat_id()),String.valueOf(schedule.getSched_id())});
                             count =count+x;
+                        }
+                        if(cursor!=null)
+                        {
+                            cursor.close();
                         }
                         initTicket();
                         Message message = new Message();
@@ -219,23 +240,6 @@ public class SaleTicketChooseSeat extends AppCompatActivity {
                 }).start();
 
 
-//                SQLiteDatabase sqLiteDatabase = MyDatabaseHelper.getInstance().getWritableDatabase();
-//                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-//                ContentValues contentValues = new ContentValues();
-//                int count = 0;
-//                for(Seat s:chooseSeats)
-//                {
-//                            contentValues.clear();
-//                            contentValues.put("ticket_status",1);
-//                            int x = sqLiteDatabase.update("ticket",contentValues,"seat_id = ? and sched_id = ?",
-//                                    new String[]{String.valueOf(s.getSeat_id()),String.valueOf(schedule.getSched_id())});
-//                        count =count+x;
-//                }
-//                initTicket();
-//                Toast.makeText(getApplicationContext(),"成功买了了"+count+"张票",Toast.LENGTH_SHORT).show();
-//                chooseSeats.clear();
-//                seatTableView.removeAll();
-//                seatTableView.invalidate();
             }
         });
 

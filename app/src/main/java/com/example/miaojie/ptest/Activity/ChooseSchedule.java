@@ -49,6 +49,7 @@ public class ChooseSchedule extends AppCompatActivity {
     {
         scheduleList = new ArrayList<>();
         SimpleDateFormat format  = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        //本地数据库
         SQLiteDatabase sqLiteDatabase = MyDatabaseHelper.getInstance().getWritableDatabase();
         Cursor cursor = sqLiteDatabase.query("schedule", null, "play_id = ? and sched_time > ?", new String[]{String.valueOf(play.getPlay_id()),format.format(new Date())}, null, null, null);
         if (cursor.moveToFirst()) {
@@ -70,6 +71,11 @@ public class ChooseSchedule extends AppCompatActivity {
 
         }
         cursor.close();
+
+        /**
+         * 从服务器获取
+         */
+
 
     }
 
@@ -169,6 +175,6 @@ public class ChooseSchedule extends AppCompatActivity {
                 return false;
             }
         });
-
     }
+
 }

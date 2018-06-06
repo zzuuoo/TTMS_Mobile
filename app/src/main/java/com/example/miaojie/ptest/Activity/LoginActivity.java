@@ -6,10 +6,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.miaojie.ptest.R;
+import com.example.miaojie.ptest.Utils.HttpAccess;
 import com.example.miaojie.ptest.Utils.MyDatabaseHelper;
 import com.example.miaojie.ptest.pojo.User;
 
@@ -86,9 +87,10 @@ public class LoginActivity extends Activity {
 //                            Toast.makeText(getApplication(),"取消密码成功",Toast.LENGTH_SHORT).show();
                          }
                         MainActivity.isLogin=true;
+                        MainActivity.user = (User)msg.obj;
                         Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-                        intent.putExtra("user",(User)msg.obj);
-                        Log.e("登录",(((User) msg.obj).getEmp_no()));
+//                        intent.putExtra("user",(User)msg.obj);
+//                        Log.e("登录",(((User) msg.obj).getEmp_no()));
                         Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
                         startActivity(intent);
                         LoginActivity.this.finish();
@@ -124,7 +126,6 @@ public class LoginActivity extends Activity {
                             handler.sendMessage(message);
                             return;
                         }
-
 
                         message.what=2;
                         message.obj=user;
@@ -189,4 +190,63 @@ public class LoginActivity extends Activity {
         return super.onKeyDown(keyCode, event);
 
     }
+    class MyAsyncTask extends AsyncTask<String, Integer, String>
+    {
+        // 在后台线程访问网络
+        public String doInBackground(String... params)
+        {
+            if(HttpAccess.checkUser(userName.getText().toString(), passWord.getText().toString()).equals("1"))
+            {
+// 1.选中记住密码，保存用户名和密码到首选项中
+                if(remeber.isChecked()){
+                    //创建sharedPreference对象，info表示文件名，MODE_PRIVATE表示访问权限为私有的
+                    SharedPreferences sp = getSharedPreferences("user", MODE_PRIVATE);
+                    //获得sp的编辑器
+                    SharedPreferences.Editor ed = sp.edit();
+                    //以键值对的显示将用户名和密码保存到sp中
+                    ed.putString("account", userName.getText().toString());
+                    ed.putString("password", passWord.getText().toString());
+                    ed.putBoolean("remeber",true);
+//                            Toast.makeText(getApplication(),"保存密码成功",Toast.LENGTH_SHORT).show();
+                    //提交用户名和密码
+                    if(antoLogin.isChecked())
+                    {
+                        ed.putBoolean("antoLogin",true);
+                    }else{
+                        ed.putBoolean("antoLogin",false);
+                    }
+                    ed.commit();
+                }else{
+                    SharedPreferences sp = getSharedPreferences("user", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.remove("account");
+                    editor.remove("password");
+                    editor.putBoolean("remeber",false);
+                    editor.putBoolean("antoLogin",false);
+
+                    editor.commit();
+//                            Toast.makeText(getApplication(),"取消密码成功",Toast.LENGTH_SHORT).show();
+                }
+                MainActivity.isLogin=true;
+                Intent intent=new Intent(LoginActivity.this,MainActivity.class);
+//                MainActivity.user = ....从服务器获取user对象
+// intent.putExtra("user",(User)msg.obj);
+//                Log.e("登录",(((User) msg.obj).getEmp_no()));
+                Toast.makeText(LoginActivity.this,"登录成功",Toast.LENGTH_SHORT).show();
+                startActivity(intent);
+                LoginActivity.this.finish();
+// 2.跳转到下一个页面
+        // 如果需要更新UI组件，调用如下方法到onProgressUpdate
+        // publishProgress(1);
+            }
+            return "";
+        }
+        // UI线程调用
+        public void onProgressUpdate(Integer... values)
+        {
+// 如果需要更新UI组件，代码写在次处
+
+        }
+    }
+
 }

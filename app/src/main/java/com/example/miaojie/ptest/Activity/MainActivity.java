@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     public static UserInfo userInfo;
     public static Employee employee=null;
     public static boolean isLogin=false;
-    public static User user=null;
+    public static User user = null;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ArrayList<Fragment>fragmentArrayList;

@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.miaojie.ptest.Activity.LoginActivity;
 import com.example.miaojie.ptest.Activity.MainActivity;
+import com.example.miaojie.ptest.Activity.TestActivity;
 import com.example.miaojie.ptest.R;
 
 /**
@@ -39,11 +40,14 @@ public class PersonalFragment extends Fragment{
         about_me.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-                dialog.setTitle("关于");
-                dialog.setMessage("有问题，请联系：18829071821");
-                dialog.setCancelable(true);
-                dialog.show();
+//                AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+//                dialog.setTitle("关于");
+//                dialog.setMessage("有问题，请联系：18829071821");
+//                dialog.setCancelable(true);
+//                dialog.show();
+
+                Intent intent = new Intent(getContext(), TestActivity.class);
+                startActivity(intent);
             }
         });
         logout = (ListMenuItemView)view.findViewById(R.id.me_layout_logout);

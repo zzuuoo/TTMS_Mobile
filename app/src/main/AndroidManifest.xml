@@ -60,7 +60,8 @@
             android:name=".Activity.EditUserActivity"
             android:alwaysRetainTaskState="true" />
         <activity android:name=".Activity.ChooseSchedule" />
-        <activity android:name=".Activity.SaleTicketChooseSeat"></activity>
+        <activity android:name=".Activity.SaleTicketChooseSeat" />
+        <activity android:name=".Activity.TestActivity"></activity>
     </application>
 
 </manifest>

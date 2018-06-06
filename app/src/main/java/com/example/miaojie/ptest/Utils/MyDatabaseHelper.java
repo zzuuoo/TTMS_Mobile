@@ -131,7 +131,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("INSERT INTO "
                 + "user"
                 + " (emp_no, emp_pass, type, head_path)"
-                + " VALUES ('root', 'tooy', 1,'root');");
+                + " VALUES ('root', 'root', 1,'root');");
 //        Toast.makeText(context,"创建数据库成功",Toast.LENGTH_SHORT).show();
 
     }
@@ -147,7 +147,6 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("drop table if exists ticket");
         sqLiteDatabase.execSQL("drop table if exists sale");
         sqLiteDatabase.execSQL("drop table if exists sale_item");
-        sqLiteDatabase.execSQL("drop table if exists data_dict");
         onCreate(sqLiteDatabase);
     }
 }
