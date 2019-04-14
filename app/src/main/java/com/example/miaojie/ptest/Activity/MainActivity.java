@@ -10,8 +10,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.miaojie.ptest.Adapter.VPadapter;
@@ -20,15 +18,11 @@ import com.example.miaojie.ptest.Fragment.MoiveListFragment;
 import com.example.miaojie.ptest.Fragment.PersonalFragment;
 import com.example.miaojie.ptest.R;
 import com.example.miaojie.ptest.pojo.Employee;
-import com.example.miaojie.ptest.pojo.OrderInfo;
 import com.example.miaojie.ptest.pojo.User;
-import com.example.miaojie.ptest.pojo.UserInfo;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    public static OrderInfo orderInfo=new OrderInfo();
-    public static UserInfo userInfo;
     public static Employee employee=null;
     public static boolean isLogin=false;
     public static User user = null;
@@ -44,10 +38,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        tabLayout= (TabLayout) findViewById(R.id.tablayout);
+        tabLayout= findViewById(R.id.tablayout);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
 
-        viewPager= (ViewPager) findViewById(R.id.viewpager);
+        viewPager= findViewById(R.id.viewpager);
 
 
         fragmentArrayList=new ArrayList<>();
@@ -55,7 +49,11 @@ public class MainActivity extends AppCompatActivity {
 
 
         title=new ArrayList<>();
-        title.add("系统管理");
+        if(user.getType()==1)
+        {
+            title.add("系统管理");
+        }
+//        title.add("系统管理");
         title.add("电影");
 //        title.add("讨论版");
         title.add("个人信息");
@@ -74,7 +72,10 @@ public class MainActivity extends AppCompatActivity {
 //        user= (User) getIntent().getSerializableExtra("user");
         if(fragmentArrayList.size()<3)
         {
-            fragmentArrayList.add(new ManageFragment());
+            if(user.getType()==1)
+            {
+                fragmentArrayList.add(new ManageFragment());
+            }
             fragmentArrayList.add(new MoiveListFragment());
             fragmentArrayList.add(new PersonalFragment());
         }
@@ -88,8 +89,6 @@ public class MainActivity extends AppCompatActivity {
             tab.setCustomView(vPadapter.getTabView(i));
         }
 
-
-        Log.e("onStart",(userInfo==null)+"--"+(getIntent().getSerializableExtra("userInfo")==null));
     }
 
     @Override
@@ -140,8 +139,8 @@ public class MainActivity extends AppCompatActivity {
             }  else{
                 MainActivity.isLogin=false;
                 MainActivity.user=null;
-                ((TextView) findViewById(R.id.me_layout_name_tips)).setClickable(true);
-                ((ImageView)findViewById(R.id.me_layout_head_image)).setClickable(true);
+                findViewById(R.id.me_layout_name_tips).setClickable(true);
+                findViewById(R.id.me_layout_head_image).setClickable(true);
                 this.finish();
 
             }

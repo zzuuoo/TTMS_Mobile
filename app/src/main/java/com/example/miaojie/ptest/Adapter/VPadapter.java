@@ -47,9 +47,9 @@ public class VPadapter extends FragmentPagerAdapter {
     public View getTabView(int position)
     {
         View view= LayoutInflater.from(context).inflate(R.layout.tab_item,null,false);
-        TextView titl= (TextView) view.findViewById(R.id.tab_title);
+        TextView titl= view.findViewById(R.id.tab_title);
         titl.setText(title.get(position));
-        ImageView imageView= (ImageView) view.findViewById(R.id.tab_icon);
+        ImageView imageView= view.findViewById(R.id.tab_icon);
         imageView.setImageResource(imageList.get(position));
         return view;
     }

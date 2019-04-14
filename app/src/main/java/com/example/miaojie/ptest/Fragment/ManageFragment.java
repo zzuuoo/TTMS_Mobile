@@ -29,15 +29,15 @@ public class ManageFragment extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View root=inflater.inflate(R.layout.fragment_management,null,false);
-        play=(Button)root.findViewById(R.id.button_play);
+        play= root.findViewById(R.id.button_play);
         play.setOnClickListener(this);
-        user=(Button)root.findViewById(R.id.button_user);
+        user= root.findViewById(R.id.button_user);
         user.setOnClickListener(this);
-        schedule=(Button)root.findViewById(R.id.button_schedule);
+        schedule= root.findViewById(R.id.button_schedule);
         schedule.setOnClickListener(this);
-        seat=(Button)root.findViewById(R.id.button_seat);
+        seat= root.findViewById(R.id.button_seat);
         seat.setOnClickListener(this);
-        studio=(Button)root.findViewById(R.id.button_studio);
+        studio= root.findViewById(R.id.button_studio);
         studio.setOnClickListener(this);
         return root;
     }

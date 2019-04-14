@@ -9,7 +9,7 @@ public class Sale
     private Date sale_time;
     private double sale_payment;//收钱
     private double sale_change;//找零
-    private int sale_type;//退款、付款
+    private int sale_type;// 1：销售单\r\n            -1：退款单
     private int sale_status;//0待付款 1已付款
 
     public int getSale_id() {

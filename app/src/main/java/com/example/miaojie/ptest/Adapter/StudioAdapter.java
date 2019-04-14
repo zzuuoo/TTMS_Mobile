@@ -37,12 +37,12 @@ public class StudioAdapter extends ArrayAdapter<Studio> {
         if (convertView == null) {
             view = LayoutInflater.from(getContext()).inflate(resourceid, parent, false);
             holder = new ViewHolder();
-            holder.studio_name = (TextView)view.findViewById(R.id.studio_name);
-            holder.studio_row = (TextView)view.findViewById(R.id.studio_row);
-            holder.studio_col = (TextView)view.findViewById(R.id.studio_col);
-            holder.studio_introduction = (TextView)view.findViewById(R.id.studio_introduction);
-            holder.studio_status = (TextView)view.findViewById(R.id.studio_status);
-            holder.studio_id = (TextView)view.findViewById(R.id.studio_id);
+            holder.studio_name = view.findViewById(R.id.studio_name);
+            holder.studio_row = view.findViewById(R.id.studio_row);
+            holder.studio_col = view.findViewById(R.id.studio_col);
+            holder.studio_introduction = view.findViewById(R.id.studio_introduction);
+            holder.studio_status = view.findViewById(R.id.studio_status);
+            holder.studio_id = view.findViewById(R.id.studio_id);
             convertView = view;
             convertView.setTag(holder);
         } else {

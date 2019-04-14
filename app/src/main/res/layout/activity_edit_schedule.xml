@@ -61,7 +61,7 @@
             android:layout_marginRight="10dp"
             android:layout_height="40dp"/>
 
-        <EditText
+        <TextView
             android:id="@+id/schedule_data_edit"
             android:layout_width="240dp"
             android:layout_height="match_parent"
@@ -69,7 +69,7 @@
             android:textColor="#000000"
             android:gravity="center"
             android:inputType="date"
-            android:background="@drawable/shape_button"></EditText>
+            android:background="@drawable/shape_button"></TextView>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -85,7 +85,7 @@
             android:layout_marginRight="10dp"
             android:layout_height="40dp"/>
 
-        <EditText
+        <TextView
             android:id="@+id/schedule_time_edit"
             android:layout_width="240dp"
             android:textColor="#000000"
@@ -93,7 +93,7 @@
             android:inputType="time"
             android:hint="hour:minute"
             android:gravity="center"
-            android:background="@drawable/shape_button"></EditText>
+            android:background="@drawable/shape_button"></TextView>
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"

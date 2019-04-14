@@ -54,29 +54,29 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initView() {
-        volley_get = (Button)findViewById(R.id.volley_get);
+        volley_get = findViewById(R.id.volley_get);
         volley_get.setOnClickListener(this);
 
-        volley_post = (Button)findViewById(R.id.volley_post);
+        volley_post = findViewById(R.id.volley_post);
         volley_post.setOnClickListener(this);
 
-        volley_json = (Button)findViewById(R.id.volley_json);
+        volley_json = findViewById(R.id.volley_json);
         volley_json.setOnClickListener(this);
 
-        volley_imageRequest = (Button)findViewById(R.id.volley_imageRequest);
+        volley_imageRequest = findViewById(R.id.volley_imageRequest);
         volley_imageRequest.setOnClickListener(this);
 
-        volley_imageLader = (Button)findViewById(R.id.volley_imageLader);
+        volley_imageLader = findViewById(R.id.volley_imageLader);
         volley_imageLader.setOnClickListener(this);
 
-        netWorkImageView = (Button)findViewById(R.id.netWorkImageView);
+        netWorkImageView = findViewById(R.id.netWorkImageView);
         netWorkImageView.setOnClickListener(this);
 
-        volley_image = (ImageView) findViewById(R.id.volley_image);
+        volley_image = findViewById(R.id.volley_image);
 
-        volley_imageNet = (SimpleDraweeView) findViewById(R.id.volley_imageNet);
+        volley_imageNet = findViewById(R.id.volley_imageNet);
 
-        volley_result = (TextView)findViewById(R.id.volley_result);
+        volley_result = findViewById(R.id.volley_result);
     }
 
     @Override
@@ -180,7 +180,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
             }
         }){
             @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
+            protected Map<String, String> getParams() {
 
                 Map<String,String> map = new HashMap<>();
                 // map.put("value1","param1");//传入参数
@@ -278,7 +278,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         //加载图片
         String url = "http://img5.mtime.cn/mg/2016/12/26/164311.99230575.jpg";
         //加载不到，加载失败
-        ImageLoader.ImageListener imageLister = imageLoader.getImageListener(volley_imageNet,R.mipmap.ic_launcher,R.mipmap.ic_launcher);
+        ImageLoader.ImageListener imageLister = ImageLoader.getImageListener(volley_imageNet,R.mipmap.ic_launcher,R.mipmap.ic_launcher);
         imageLoader.get(url,imageLister);
     }
 

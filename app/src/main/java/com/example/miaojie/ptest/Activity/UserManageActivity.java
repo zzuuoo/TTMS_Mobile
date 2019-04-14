@@ -3,12 +3,14 @@ package com.example.miaojie.ptest.Activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -16,11 +18,22 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.miaojie.ptest.Adapter.EmployeeAdapter;
 import com.example.miaojie.ptest.R;
+import com.example.miaojie.ptest.Utils.LoadingDialog;
 import com.example.miaojie.ptest.Utils.MyDatabaseHelper;
 import com.example.miaojie.ptest.pojo.Employee;
+import com.example.miaojie.ptest.pojo.EmployeeWeb;
+import com.example.miaojie.ptest.pojo.Grob_var;
 import com.example.miaojie.ptest.pojo.User;
+import com.example.miaojie.ptest.pojo.UserWeb;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,19 +50,41 @@ public class  UserManageActivity extends AppCompatActivity implements View.OnCli
     private boolean isSearch =false;
     private SearchView user_searchview;
     private EmployeeAdapter employeeAdapter;
+    private RequestQueue requestQueue;
+    Handler handler;
+    LoadingDialog dialog;
+    int c = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_manage);
-        init();
+        setData();
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what)
+                {
+                    case 1:
+                        c++;
+                        if(c>1)
+                        {
+                            dialog.close();
+                            init();
+                        }
+                        break;
+
+                }
+            }
+        };
+//                init();
 
     }
     public void init()
     {
 
         //返回键
-        user_toolbar = (Toolbar)findViewById(R.id.user_toolbar);
+        user_toolbar = findViewById(R.id.user_toolbar);
         user_toolbar.setTitle("");
         setSupportActionBar(user_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -60,10 +95,9 @@ public class  UserManageActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
-        ls = (ListView)findViewById(R.id.user_list);
-        addUser  = (Button)findViewById(R.id.add_user);
+        ls = findViewById(R.id.user_list);
+        addUser  = findViewById(R.id.add_user);
         addUser.setOnClickListener(this);
-        setData();
         employeeAdapter = new EmployeeAdapter(this,R.layout.employee_item,userList);
         ls.setAdapter(employeeAdapter);
         ls.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -130,7 +164,7 @@ public class  UserManageActivity extends AppCompatActivity implements View.OnCli
         });
 
 
-        user_searchview = (SearchView) findViewById(R.id.userSearchView);
+        user_searchview = findViewById(R.id.userSearchView);
 
         user_searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -167,41 +201,128 @@ public class  UserManageActivity extends AppCompatActivity implements View.OnCli
 
         empList.clear();
         userList.clear();
-        SQLiteDatabase sqLiteDatabase = MyDatabaseHelper.getInstance().getWritableDatabase();
-        Cursor cursor = sqLiteDatabase.query("employee", null, null, null, null, null, null);
-        if (cursor.moveToFirst()) {
-
-            do {
-                Employee employee = new Employee();
-                employee.setEmp_id(cursor.getInt(cursor.getColumnIndex("emp_id")));
-                employee.setEmp_no(cursor.getString(cursor.getColumnIndex("emp_no")));
-                employee.setEmp_name(cursor.getString(cursor.getColumnIndex("emp_name")));
-                employee.setEmp_email(cursor.getString(cursor.getColumnIndex("emp_email")));
-                employee.setEmp_addr(cursor.getString(cursor.getColumnIndex("emp_addr")));
-                employee.setEmp_tel_num(cursor.getString(cursor.getColumnIndex("emp_tel_num")));
-                empList.add(employee);
-            } while (cursor.moveToNext());
-
-        }
-        cursor = sqLiteDatabase.query("user", null, null, null, null, null, null);
-        if (cursor.moveToFirst()) {
-
-            do {
-                User user = new User();
-                user.setEmp_no(cursor.getString(cursor.getColumnIndex("emp_no")));
-                user.setEmp_pass(cursor.getString(cursor.getColumnIndex("emp_pass")));
-                user.setType(cursor.getInt(cursor.getColumnIndex("type")));
-                user.setHead_path(cursor.getString(cursor.getColumnIndex("head_path")));
-                userList.add(user);
-            } while (cursor.moveToNext());
-
-        }
-        cursor.close();
+//        SQLiteDatabase sqLiteDatabase = MyDatabaseHelper.getInstance().getWritableDatabase();
+//        Cursor cursor = sqLiteDatabase.query("employee", null, null, null, null, null, null);
+//        if (cursor.moveToFirst()) {
+//
+//            do {
+//                Employee employee = new Employee();
+//                employee.setEmp_id(cursor.getInt(cursor.getColumnIndex("emp_id")));
+//                employee.setEmp_no(cursor.getString(cursor.getColumnIndex("emp_no")));
+//                employee.setEmp_name(cursor.getString(cursor.getColumnIndex("emp_name")));
+//                employee.setEmp_email(cursor.getString(cursor.getColumnIndex("emp_email")));
+//                employee.setEmp_addr(cursor.getString(cursor.getColumnIndex("emp_addr")));
+//                employee.setEmp_tel_num(cursor.getString(cursor.getColumnIndex("emp_tel_num")));
+//                empList.add(employee);
+//            } while (cursor.moveToNext());
+//
+//        }
+//        cursor = sqLiteDatabase.query("user", null, null, null, null, null, null);
+//        if (cursor.moveToFirst()) {
+//
+//            do {
+//                User user = new User();
+//                user.setEmp_no(cursor.getString(cursor.getColumnIndex("emp_no")));
+//                user.setEmp_pass(cursor.getString(cursor.getColumnIndex("emp_pass")));
+//                user.setType(cursor.getInt(cursor.getColumnIndex("type")));
+//                user.setHead_path(cursor.getString(cursor.getColumnIndex("head_path")));
+//                userList.add(user);
+//            } while (cursor.moveToNext());
+//
+//        }
+//        cursor.close();
+        c=0;
+        dialog = new LoadingDialog(UserManageActivity.this,"数据请求中...");
+        dialog.show();
+        getEmployee();
+        getUser();
 
     }
 
+    public void getUser(){
+        //创建一个请求队列
+        requestQueue = Volley.newRequestQueue(this);
+        //创建一个请求
+//        String url = "http://api.m.mtime.cn/PageSubArea/TrailerList.api";
+//        String url1 = "http://128.0.0.241:8080/mobileUser/login?name=000001&password=123456";
 
+        StringRequest stringRequest =new StringRequest(Grob_var.host+"mobileUser/getUser", new Response.Listener<String>() {
+            //正确接收数据回调
+            @Override
+            public void onResponse(String s) {
 
+                //                    JSONObject jsonObject = new JSONObject(s);
+//                Log.e("ooooooooooopopop",s);
+                List<UserWeb> userwebs = new Gson().fromJson(s, new TypeToken<List<UserWeb>>() {}.getType());
+                for(int i=0;i<userwebs.size();i++)
+                {
+                    User user=new User();
+                    user.setHead_path(userwebs.get(i).getHeadPath());
+                    user.setType(userwebs.get(i).getType());
+                    user.setEmp_pass(userwebs.get(i).getEmpPass());
+                    user.setEmp_no(userwebs.get(i).getEmpNo());
+                    userList.add(user);
+                }
+                Message message = new Message();
+                message.what =1;
+                handler.sendMessage(message);
+
+            }
+        }, new Response.ErrorListener() {//异常后的监听数据
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.e("LoginUser","加载错误"+volleyError);
+                Message message = new Message();
+                message.what =1;
+                handler.sendMessage(message);
+            }
+        });
+        //将get请求添加到队列中
+        requestQueue.add(stringRequest);
+    }
+    public void getEmployee(){
+        //创建一个请求队列
+        requestQueue = Volley.newRequestQueue(this);
+        //创建一个请求
+//        String url = "http://api.m.mtime.cn/PageSubArea/TrailerList.api";
+//        String url1 = "http://128.0.0.241:8080/mobileUser/login?name=000001&password=123456";
+
+        StringRequest stringRequest =new StringRequest(Grob_var.host+"mobileEmployee/getEmployee", new Response.Listener<String>() {
+            //正确接收数据回调
+            @Override
+            public void onResponse(String s) {
+
+                //                    JSONObject jsonObject = new JSONObject(s);
+//                Log.e("ooooooooooopopop",s);
+                List<EmployeeWeb> employeeWebs = new Gson().fromJson(s, new TypeToken<List<EmployeeWeb>>() {}.getType());
+                for(int i=0;i<employeeWebs.size();i++)
+                {
+                    Employee employee=new Employee();
+                    employee.setEmp_addr(employeeWebs.get(i).getEmpAddr());
+                    employee.setEmp_email(employeeWebs.get(i).getEmpEmail());
+                    employee.setEmp_id(employeeWebs.get(i).getEmpId());
+                    employee.setEmp_no(employeeWebs.get(i).getEmpNo());
+                    employee.setEmp_tel_num(employeeWebs.get(i).getEmpTelNum());
+                    employee.setEmp_name(employeeWebs.get(i).getEmpName());
+                    empList.add(employee);
+                }
+                Message message = new Message();
+                message.what =1;
+                handler.sendMessage(message);
+
+            }
+        }, new Response.ErrorListener() {//异常后的监听数据
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.e("LoginUser","加载错误"+volleyError);
+                Message message = new Message();
+                message.what =1;
+                handler.sendMessage(message);
+            }
+        });
+        //将get请求添加到队列中
+        requestQueue.add(stringRequest);
+    }
     @Override
     protected void onDestroy()
     {
@@ -232,8 +353,8 @@ public class  UserManageActivity extends AppCompatActivity implements View.OnCli
                 {
                     Toast.makeText(getApplication(),"插入成功",Toast.LENGTH_SHORT).show();
                     setData();
-                    employeeAdapter = new EmployeeAdapter(this,R.layout.employee_item,userList);
-                    ls.setAdapter(employeeAdapter);
+//                    employeeAdapter = new EmployeeAdapter(this,R.layout.employee_item,userList);
+//                    ls.setAdapter(employeeAdapter);
 
                 }else if (resultCode==0){
                     Toast.makeText(getApplication(),"添加失败",Toast.LENGTH_SHORT).show();
@@ -246,8 +367,8 @@ public class  UserManageActivity extends AppCompatActivity implements View.OnCli
                 {
                     Toast.makeText(getApplication(),"修改成功",Toast.LENGTH_SHORT).show();
                     setData();
-                    employeeAdapter = new EmployeeAdapter(this,R.layout.employee_item,userList);
-                    ls.setAdapter(employeeAdapter);
+//                    employeeAdapter = new EmployeeAdapter(this,R.layout.employee_item,userList);
+//                    ls.setAdapter(employeeAdapter);
                 }else if (resultCode==0){
                     Toast.makeText(getApplication(),"修改失败",Toast.LENGTH_SHORT).show();
                 }else{

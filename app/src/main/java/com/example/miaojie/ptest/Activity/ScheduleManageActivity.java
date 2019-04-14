@@ -15,13 +15,22 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.miaojie.ptest.Adapter.ScheduleAdapter;
 import com.example.miaojie.ptest.R;
+import com.example.miaojie.ptest.Utils.LoadingDialog;
 import com.example.miaojie.ptest.Utils.MyApplication;
 import com.example.miaojie.ptest.Utils.MyDatabaseHelper;
+import com.example.miaojie.ptest.pojo.Grob_var;
 import com.example.miaojie.ptest.pojo.Schedule;
+import com.example.miaojie.ptest.pojo.ScheduleWeb;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -36,6 +45,8 @@ public class ScheduleManageActivity extends AppCompatActivity {
     private ScheduleAdapter scheduleAdapter;
     ListView listView;
     private boolean isSearch = false;
+    RequestQueue requestQueue;
+    LoadingDialog ldialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,9 +59,9 @@ public class ScheduleManageActivity extends AppCompatActivity {
 
     public void init()
     { scheduleAdapter = new ScheduleAdapter(this,R.layout.schedule_item,scheduleList);
-        listView = (ListView)findViewById(R.id.schedule_list);
+        listView = findViewById(R.id.schedule_list);
         listView.setAdapter(scheduleAdapter);
-        schedule_toolbar = (Toolbar)findViewById(R.id.schedule_toolbar);
+        schedule_toolbar = findViewById(R.id.schedule_toolbar);
         schedule_toolbar.setTitle("");
         setSupportActionBar(schedule_toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -91,17 +102,7 @@ public class ScheduleManageActivity extends AppCompatActivity {
                 dialog.setPositiveButton("确认", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        SQLiteDatabase sqLiteDatabase = MyDatabaseHelper.getInstance().getWritableDatabase();
-                        sqLiteDatabase.delete("schedule","sched_id  =  ?",new String[]{String.valueOf(sc.getSched_id())});
-                        sqLiteDatabase.execSQL("update play set play_status = play_status-1 " +
-                                " where play_id = " +sc.getPlay_id());
-                        sqLiteDatabase.execSQL("update studio set studio_flag = studio_flag-1 " +
-                                " where studio_id = " +sc.getStudio_id());
-                        sqLiteDatabase.delete("ticket","sched_id  =  ?",new String[]{String.valueOf(sc.getSched_id())});
-                        Toast.makeText(getApplicationContext(), "删除了啦", Toast.LENGTH_SHORT).show();
-                        initScheduleData();
-                        scheduleAdapter = new ScheduleAdapter(getApplication(),R.layout.schedule_item,scheduleList);
-                        listView.setAdapter(scheduleAdapter);
+                        delete(sc.getSched_id());
                     }
                 });
                 dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -115,7 +116,7 @@ public class ScheduleManageActivity extends AppCompatActivity {
             }
         });
 
-        schdule_searchview = (SearchView)findViewById(R.id.scheduleSearchView);
+        schdule_searchview = findViewById(R.id.scheduleSearchView);
 
         schdule_searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -165,7 +166,7 @@ public class ScheduleManageActivity extends AppCompatActivity {
             }
         });
 
-        schedule_add = (Button)findViewById(R.id.add_schedule);
+        schedule_add = findViewById(R.id.add_schedule);
         schedule_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -177,28 +178,108 @@ public class ScheduleManageActivity extends AppCompatActivity {
     public void initScheduleData()
     {
         scheduleList.clear();
-        SimpleDateFormat format  = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        SQLiteDatabase sqLiteDatabase = MyDatabaseHelper.getInstance().getWritableDatabase();
-        Cursor cursor = sqLiteDatabase.query("schedule", null, null, null, null, null, null);
-        if (cursor.moveToFirst()) {
+//        SimpleDateFormat format  = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+//        SQLiteDatabase sqLiteDatabase = MyDatabaseHelper.getInstance().getWritableDatabase();
+//        Cursor cursor = sqLiteDatabase.query("schedule", null, null, null, null, null, null);
+//        if (cursor.moveToFirst()) {
+//
+//            do {
+//                Schedule schedule = new Schedule();
+//                schedule.setSched_id(cursor.getInt(cursor.getColumnIndex("sched_id")));
+//                schedule.setPlay_id(cursor.getInt(cursor.getColumnIndex("play_id")));
+//                schedule.setStudio_id(cursor.getInt(cursor.getColumnIndex("studio_id")));
+//                schedule.setSched_ticket_price(cursor.getDouble(cursor.getColumnIndex("sched_ticket_price")));
+//                try {
+//                    schedule.setSched_time((Date)format.parse(cursor.getString(cursor.getColumnIndex("sched_time"))));
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
+//                scheduleList.add(schedule);
+//            } while (cursor.moveToNext());
+//
+//        }
+//        cursor.close();
+        get();
 
-            do {
-                Schedule schedule = new Schedule();
-                schedule.setSched_id(cursor.getInt(cursor.getColumnIndex("sched_id")));
-                schedule.setPlay_id(cursor.getInt(cursor.getColumnIndex("play_id")));
-                schedule.setStudio_id(cursor.getInt(cursor.getColumnIndex("studio_id")));
-                schedule.setSched_ticket_price(cursor.getDouble(cursor.getColumnIndex("sched_ticket_price")));
+    }
+    public void delete(int sched_id)
+    {
+        //创建一个请求队列
+        requestQueue = Volley.newRequestQueue(this);
+
+
+        StringRequest stringRequest =new StringRequest(Grob_var.host+"mobileSchedule/deleteScheduleById?schedule_id="+sched_id, new Response.Listener<String>() {
+            //正确接收数据回调
+            @Override
+            public void onResponse(String s) {
+
+                if(s.equals("succeed"))
+                {
+                    initScheduleData();
+                    Toast.makeText(getApplicationContext(),"删除成功",Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),"删除失败",Toast.LENGTH_SHORT).show();
+                }
+
+
+            }
+        }, new Response.ErrorListener() {//异常后的监听数据
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Toast.makeText(getApplicationContext(),"加载异常",Toast.LENGTH_SHORT).show();
+            }
+        });
+        //将get请求添加到队列中
+        requestQueue.add(stringRequest);
+    }
+    public void get(){
+        //创建一个请求队列
+        ldialog = new LoadingDialog(ScheduleManageActivity.this,"请求中...");
+        ldialog.show();
+        requestQueue = Volley.newRequestQueue(this);
+        //创建一个请求
+//        String url = "http://api.m.mtime.cn/PageSubArea/TrailerList.api";
+//        String url1 = "http://192.168.0.32:8080/mobilePlay/getPlay";
+
+        StringRequest stringRequest =new StringRequest(Grob_var.host+"mobileSchedule/"+"getSchedule", new Response.Listener<String>() {
+            //正确接收数据回调
+            @Override
+            public void onResponse(String s) {
+//                List<User> userList = gson.fromJson(string, new TypeToken<List<User>>() {}.getType());
+//                List<User> userList = gson.fromJson(jsonArray, new TypeToken<List<User>>() {}.getType());
                 try {
-                    schedule.setSched_time((Date)format.parse(cursor.getString(cursor.getColumnIndex("sched_time"))));
-                } catch (ParseException e) {
+                    Gson gson = new Gson();
+                    List<ScheduleWeb> scheduleWebs = new ArrayList<>();
+                    scheduleWebs = gson.fromJson(s, new TypeToken<List<ScheduleWeb>>() {}.getType());
+                    for(int i=0;i<scheduleWebs.size();i++)
+                    {
+                        Schedule schedule = new Schedule();
+                        schedule.setSched_id(scheduleWebs.get(i).getSchedId());
+                        schedule.setSched_time(new Date(scheduleWebs.get(i).getSchedTime()));
+                        schedule.setStudio_id(scheduleWebs.get(i).getStudioId());
+                        schedule.setPlay_id(scheduleWebs.get(i).getPlayId());
+                        schedule.setSched_ticket_price(scheduleWebs.get(i).getSchedTicketPrice());
+                        scheduleList.add(schedule);
+
+                    }
+
+
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-                scheduleList.add(schedule);
-            } while (cursor.moveToNext());
+                ldialog.close();
+                scheduleAdapter = new ScheduleAdapter(ScheduleManageActivity.this,R.layout.schedule_item,scheduleList);
+                listView.setAdapter(scheduleAdapter);
 
-        }
-        cursor.close();
-
+            }
+        }, new Response.ErrorListener() {//异常后的监听数据
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+//                volley_result.setText("加载错误"+volleyError);
+            }
+        });
+        //将get请求添加到队列中
+        requestQueue.add(stringRequest);
     }
     @Override
     protected void onActivityResult(int requestCode,int resultCode,Intent data)

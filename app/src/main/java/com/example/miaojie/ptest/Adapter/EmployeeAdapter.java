@@ -39,8 +39,8 @@ public class EmployeeAdapter extends ArrayAdapter<User> {
             v = LayoutInflater.from(getContext()).inflate(resourceid,parent,false);
             convertView=v;
             holder = new ViewHolder();
-            holder.account= (TextView)v.findViewById(R.id.account);
-            holder.type= (TextView)v.findViewById(R.id.type_user);
+            holder.account= v.findViewById(R.id.account);
+            holder.type= v.findViewById(R.id.type_user);
             convertView.setTag(holder);
 
         }else {

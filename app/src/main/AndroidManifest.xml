@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.miaojie.ptest">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
     <!-- android:theme="@style/AppTheme.NoActionBar" -->
@@ -32,14 +33,8 @@
             android:theme="@style/AppTheme.NoActionBar">
             >
         </activity>
-        <activity android:name=".Activity.ChoosSeatActivity" />
-        <activity android:name=".Activity.DetailedActivity" />
-        <activity android:name=".Activity.PersonalInfoActivity" />
-        <activity android:name=".Activity.BuyTicketChooseCinemaActivity" />
-        <activity android:name=".Activity.BuyTicketChooseTimeActivity" />
         <activity android:name=".Activity.LoginActivity" />
         <activity android:name=".Activity.RegisterActivity" />
-        <activity android:name=".Activity.OrderInfoActivity" />
         <activity android:name=".Activity.WebViewActivity" />
         <activity android:name=".Activity.PlayManageActivity" />
         <activity
@@ -61,7 +56,8 @@
             android:alwaysRetainTaskState="true" />
         <activity android:name=".Activity.ChooseSchedule" />
         <activity android:name=".Activity.SaleTicketChooseSeat" />
-        <activity android:name=".Activity.TestActivity"></activity>
+        <activity android:name=".Activity.TestActivity" />
+        <activity android:name=".Activity.ShowSaleActivity"/>
     </application>
 
 </manifest>

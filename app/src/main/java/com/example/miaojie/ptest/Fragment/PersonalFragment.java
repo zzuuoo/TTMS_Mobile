@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.miaojie.ptest.Activity.LoginActivity;
 import com.example.miaojie.ptest.Activity.MainActivity;
+import com.example.miaojie.ptest.Activity.ShowSaleActivity;
 import com.example.miaojie.ptest.Activity.TestActivity;
 import com.example.miaojie.ptest.R;
 
@@ -34,9 +35,9 @@ public class PersonalFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.fragment_personal,container,false);
-        userNickName= (TextView) view.findViewById(R.id.me_layout_name_tips);
-        head_image = (ImageView)view.findViewById(R.id.me_layout_head_image);
-        about_me = (ListMenuItemView) view.findViewById(R.id.me_layout_about_us);
+        userNickName= view.findViewById(R.id.me_layout_name_tips);
+        head_image = view.findViewById(R.id.me_layout_head_image);
+        about_me = view.findViewById(R.id.me_layout_about_us);
         about_me.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,7 +51,7 @@ public class PersonalFragment extends Fragment{
                 startActivity(intent);
             }
         });
-        logout = (ListMenuItemView)view.findViewById(R.id.me_layout_logout);
+        logout = view.findViewById(R.id.me_layout_logout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,16 +86,17 @@ public class PersonalFragment extends Fragment{
                 }
             }
         });
-        userOrder= (ListMenuItemView) view.findViewById(R.id.me_layout_my_infomation);
+        userOrder= view.findViewById(R.id.me_layout_my_caselist);
         userOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if(!MainActivity.isLogin)
-//                {
-//                    Toast.makeText(getContext(),"Î´µÇÂ¼£¬ÇëÏÈµÇÂ¼",Toast.LENGTH_SHORT).show();
-//                    return;
-//                }
-//                startActivity(new Intent(getContext(), OrderInfoActivity.class));
+                if(!MainActivity.isLogin)
+                {
+                    Toast.makeText(getContext(),"Î´µÇÂ¼£¬ÇëÏÈµÇÂ¼",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+//                Toast.makeText(getContext(),"¶©µ¥ÐÅÏ¢",Toast.LENGTH_LONG).show();
+                startActivity(new Intent(getContext(), ShowSaleActivity.class));
             }
         });
         userNickName.setOnClickListener(new View.OnClickListener() {

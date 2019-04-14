@@ -61,15 +61,18 @@
             android:layout_marginRight="10dp"
             android:layout_height="40dp"/>
 
-        <EditText
+
+        <TextView
             android:id="@+id/schedule_data_add"
             android:layout_width="240dp"
             android:textColor="#000000"
             android:layout_height="match_parent"
-            android:hint="year/month/day"
+            android:hint="选择日期+"
+            android:clickable="true"
             android:gravity="center"
             android:inputType="date"
-            android:background="@drawable/shape_button"></EditText>
+            android:background="@drawable/shape_button"></TextView>
+
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
@@ -85,15 +88,17 @@
             android:layout_marginRight="10dp"
             android:layout_height="40dp"/>
 
-        <EditText
+        <TextView
             android:id="@+id/schedule_time_add"
             android:layout_width="240dp"
             android:layout_height="match_parent"
             android:inputType="time"
             android:textColor="#000000"
-            android:hint="hour:minute"
+            android:clickable="true"
+            android:hint="选择时间+"
             android:gravity="center"
-            android:background="@drawable/shape_button"></EditText>
+            android:background="@drawable/shape_button"></TextView>
+
     </LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"

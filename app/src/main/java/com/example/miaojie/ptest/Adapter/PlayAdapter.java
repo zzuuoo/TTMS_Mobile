@@ -45,13 +45,13 @@ public class PlayAdapter extends ArrayAdapter<Play>
              view= LayoutInflater.from(getContext()).inflate(resourceid,parent,false);
              convertView=view;
              holder = new ViewHolder();
-             holder.play_name = (TextView)view.findViewById(R.id.Play_Item_Name);
-             holder.play_length = (TextView)view.findViewById(R.id.play_length);
-             holder.play_introduction = (TextView)view.findViewById(R.id.Play_Item_Introduction);
-             holder.play_lang_type = (TextView)view.findViewById(R.id.Play_Item_type_lang);
-             holder.play_image = (ImageView)view.findViewById(R.id.play_Item_Img);
-             holder.price = (TextView)view.findViewById(R.id.play_price);
-             holder.status = (TextView)view.findViewById(R.id.play_status);
+             holder.play_name = view.findViewById(R.id.Play_Item_Name);
+             holder.play_length = view.findViewById(R.id.play_length);
+             holder.play_introduction = view.findViewById(R.id.Play_Item_Introduction);
+             holder.play_lang_type = view.findViewById(R.id.Play_Item_type_lang);
+             holder.play_image = view.findViewById(R.id.play_Item_Img);
+             holder.price = view.findViewById(R.id.play_price);
+             holder.status = view.findViewById(R.id.play_status);
              convertView.setTag(holder);
          }else{
              view = convertView;
@@ -64,7 +64,22 @@ public class PlayAdapter extends ArrayAdapter<Play>
          }else{
              holder.status.setText("在售");
          }
-         holder.play_image.setImageResource(R.drawable.a1);
+         if(p.getPlay_name().contains("战狼"))
+         {
+             holder.play_image.setImageResource(R.drawable.lang2);
+         }else if(p.getPlay_name().contains("侠盗")){
+             holder.play_image.setImageResource(R.drawable.xia2);
+     }else  if(p.getPlay_name().contains("敦刻"))
+         {
+             holder.play_image.setImageResource(R.drawable.dun);
+         }else if(p.getPlay_name().contains("厕所"))
+         {
+             holder.play_image.setImageResource(R.drawable.ce);
+         }
+         else {
+             holder.play_image.setImageResource(R.drawable.a1);
+         }
+
 //         Toast.makeText(getContext(),  p.getPlay_length()+"",Toast.LENGTH_SHORT).show();
          holder.play_name.setText(p.getPlay_name());
          holder.play_length.setText(String.valueOf(p.getPlay_length())+"分钟");

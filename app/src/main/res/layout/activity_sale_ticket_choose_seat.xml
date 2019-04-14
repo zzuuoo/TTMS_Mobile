@@ -52,6 +52,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/buy_ticket_button_new"
                     android:text="购买"
+                    android:background="@drawable/shape_button"
                     android:layout_centerInParent="true"/>
             </RelativeLayout>
         </LinearLayout>

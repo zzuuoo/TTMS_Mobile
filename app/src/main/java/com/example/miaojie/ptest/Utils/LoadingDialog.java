@@ -19,11 +19,11 @@ public class LoadingDialog {
         View view = LayoutInflater.from(context).inflate(
                 R.layout.loading_dialog_view, null);
         // 获取整个布局
-        LinearLayout layout = (LinearLayout) view.findViewById(R.id.dialog_view);
+        LinearLayout layout = view.findViewById(R.id.dialog_view);
         // 页面中的LoadingView
-        mLoadingView = (LVCircularRing) view.findViewById(R.id.lv_circularring);
+        mLoadingView = view.findViewById(R.id.lv_circularring);
         // 页面中显示文本
-        TextView loadingText = (TextView) view.findViewById(R.id.loading_text);
+        TextView loadingText = view.findViewById(R.id.loading_text);
         // 显示文本
         loadingText.setText(msg);
         // 创建自定义样式的Dialog

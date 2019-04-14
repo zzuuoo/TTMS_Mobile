@@ -42,10 +42,10 @@
             android:layout_height="match_parent"
             android:text="账号："
             android:textSize="24dp"/>
-        <EditText
+        <TextView
             android:layout_width="240dp"
             android:layout_height="40dp"
-            android:hint="请输入您的账号"
+            android:hint="您的账号"
             android:textColor="#000000"
             android:gravity="center"
             android:background="@drawable/shape_button"
@@ -69,7 +69,7 @@
             android:layout_width="240dp"
             android:layout_height="40dp"
             android:hint="请输入您的密码"
-            android:inputType="textPassword"
+            android:inputType="textVisiblePassword"
             android:textColor="#000000"
             android:gravity="center"
             android:background="@drawable/shape_button"
@@ -118,6 +118,7 @@
             android:textColor="#000000"
             android:hint="请输入您的邮箱"
             android:gravity="center"
+            android:inputType="textEmailAddress"
             android:background="@drawable/shape_button"
             android:id="@+id/edit_emp_email"/>
     </LinearLayout>
@@ -140,6 +141,7 @@
             android:layout_height="40dp"
             android:hint="请输入您的地址"
             android:textColor="#000000"
+            android:inputType="textPostalAddress"
             android:gravity="center"
             android:background="@drawable/shape_button"
             android:id="@+id/edit_emp_addr"/>

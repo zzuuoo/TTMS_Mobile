@@ -28,11 +28,11 @@ public class RegisterActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.register_activity);
-        userName= (EditText) findViewById(R.id.registerUserName);
-        userNickName= (EditText) findViewById(R.id.registerUserNickName);
-        passWord= (EditText) findViewById(R.id.registerUserPassWord);
-        registerButton= (Button) findViewById(R.id.registerRegister);
-        backButton= (Button) findViewById(R.id.registerBack);
+        userName= findViewById(R.id.registerUserName);
+        userNickName= findViewById(R.id.registerUserNickName);
+        passWord= findViewById(R.id.registerUserPassWord);
+        registerButton= findViewById(R.id.registerRegister);
+        backButton= findViewById(R.id.registerBack);
         handler=new Handler(){
             @Override
             public void handleMessage(Message msg) {
